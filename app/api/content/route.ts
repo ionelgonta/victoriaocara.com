@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import SiteContent from '@/models/SiteContent';
-import { isAdmin } from '@/lib/auth';
+import { isAdmin } from '@/lib/authHelpers';
 
 export async function GET(req: NextRequest) {
   try {

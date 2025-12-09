@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Order from '@/models/Order';
 import { generateOrderNumber } from '@/lib/utils';
-import { isAdmin } from '@/lib/auth';
+import { isAdmin } from '@/lib/authHelpers';
 
 export async function GET(req: NextRequest) {
   try {

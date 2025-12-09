@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Painting from '@/models/Painting';
 import { generateSlug } from '@/lib/utils';
-import { isAdmin } from '@/lib/auth';
+import { isAdmin } from '@/lib/authHelpers';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
