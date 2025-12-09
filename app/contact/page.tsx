@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 export const metadata: Metadata = {
-  title: 'Contact - ArtGallery',
-  description: 'Contactează-ne pentru întrebări despre tablourile noastre.',
+  title: 'Contact - Victoria Ocara',
+  description: 'Contactează-ne pentru întrebări despre tablouri.',
 };
 
 export default function ContactPage() {

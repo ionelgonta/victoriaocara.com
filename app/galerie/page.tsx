@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import PaintingCard from '@/components/PaintingCard';
 
 export const metadata: Metadata = {
-  title: 'Galerie - ArtGallery',
-  description: 'Explorează întreaga noastră colecție de tablouri originale.',
+  title: 'Galerie - Victoria Ocara',
+  description: 'Explorează întreaga colecție de tablouri originale de Victoria Ocara.',
 };
 
 async function getPaintings() {

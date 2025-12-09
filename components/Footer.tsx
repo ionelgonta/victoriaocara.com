@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-serif font-bold mb-4">ArtGallery</h3>
+            <h3 className="text-xl font-serif font-bold mb-4">Victoria Ocara</h3>
             <p className="text-gray-300">
               Tablouri originale create cu pasiune și dedicare.
             </p>
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; {new Date().getFullYear()} ArtGallery. Toate drepturile rezervate.</p>
+          <p>&copy; {new Date().getFullYear()} Victoria Ocara. Toate drepturile rezervate.</p>
         </div>
       </div>
     </footer>

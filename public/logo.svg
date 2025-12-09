@@ -1,0 +1,19 @@
+<svg width="1024" height="300" viewBox="0 0 1024 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Palette -->
+  <circle cx="100" cy="150" r="80" stroke="#1e40af" stroke-width="6" fill="none"/>
+  <circle cx="70" cy="120" r="12" fill="#1e40af"/>
+  <circle cx="70" cy="160" r="12" fill="#1e40af"/>
+  <circle cx="100" cy="180" r="12" fill="#1e40af"/>
+  <circle cx="130" cy="140" r="12" fill="#1e40af"/>
+  
+  <!-- Brush -->
+  <rect x="140" y="80" width="8" height="80" fill="#1e40af" rx="4"/>
+  <ellipse cx="144" cy="70" rx="15" ry="20" fill="#1e40af"/>
+  <path d="M 144 50 Q 150 40 144 30 Q 138 40 144 50" fill="#1e40af"/>
+  
+  <!-- Text VICTORIA -->
+  <text x="240" y="140" font-family="Georgia, serif" font-size="80" font-weight="bold" fill="#3b82f6" font-style="italic">VICTORIA</text>
+  
+  <!-- Text OCARA -->
+  <text x="240" y="220" font-family="Georgia, serif" font-size="80" font-weight="bold" fill="#3b82f6" font-style="italic">OCARA</text>
+</svg>

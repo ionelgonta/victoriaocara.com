@@ -10,11 +10,11 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
 
 export const metadata: Metadata = {
-  title: 'ArtGallery - Tablouri Originale',
-  description: 'Descoperă colecția noastră de tablouri originale create cu pasiune și dedicare.',
+  title: 'Victoria Ocara - Tablouri Originale',
+  description: 'Descoperă colecția de tablouri originale create cu pasiune și dedicare de Victoria Ocara.',
   openGraph: {
-    title: 'ArtGallery - Tablouri Originale',
-    description: 'Descoperă colecția noastră de tablouri originale create cu pasiune și dedicare.',
+    title: 'Victoria Ocara - Tablouri Originale',
+    description: 'Descoperă colecția de tablouri originale create cu pasiune și dedicare de Victoria Ocara.',
     type: 'website',
   },
 };
