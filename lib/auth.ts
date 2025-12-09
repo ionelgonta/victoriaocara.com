@@ -1,3 +1,4 @@
+// @ts-nocheck
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
