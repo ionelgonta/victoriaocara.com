@@ -1,0 +1,59 @@
+'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { formatPrice } from '@/lib/utils';
+
+interface PaintingCardProps {
+  painting: {
+    _id: string;
+    title: string;
+    slug: string;
+    price: number;
+    images: { url: string; alt: string }[];
+    technique: string;
+    dimensions: { width: number; height: number; unit: string };
+  };
+}
+
+export default function PaintingCard({ painting }: PaintingCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="group"
+    >
+      <Link href={`/tablou/${painting.slug}`}>
+        <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+          {painting.images && painting.images[0] ? (
+            <Image
+              src={painting.images[0].url}
+              alt={painting.images[0].alt || painting.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400">
+              Fără imagine
+            </div>
+          )}
+        </div>
+        <div className="mt-4">
+          <h3 className="text-lg font-serif font-semibold text-primary group-hover:text-accent transition-colors">
+            {painting.title}
+          </h3>
+          <p className="text-sm text-gray-600 mt-1">
+            {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
+          </p>
+          <p className="text-sm text-gray-500">{painting.technique}</p>
+          <p className="text-xl font-semibold text-primary mt-2">
+            {formatPrice(painting.price)}
+          </p>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
