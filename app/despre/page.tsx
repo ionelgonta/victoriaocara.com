@@ -1,15 +1,42 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiInstagram } from 'react-icons/fi';
 import { SiThreads, SiFacebook } from 'react-icons/si';
+import axios from 'axios';
 
-export const metadata: Metadata = {
-  title: 'Despre Victoria Ocara - Artist',
-  description: 'Descoperă povestea artistei Victoria Ocara, specializată în pictura cu ulei, tehnica impasto și arta cu accent pe albastru, inspirată de Monet și Van Gogh.',
-};
+interface AboutContent {
+  artistPhoto: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  specialties: string[];
+}
 
 export default function DesprePage() {
+  const [aboutContent, setAboutContent] = useState<AboutContent>({
+    artistPhoto: '/uploads/victoria-studio-photo.jpg',
+    title: 'Victoria Ocara',
+    subtitle: 'Artistă specializată în pictura cu ulei',
+    description: 'Sunt o artistă pasionată de pictura cu ulei, specializată în peisaje urbane iconice și apusuri dramatice.',
+    specialties: ['Pictura cu Ulei', 'Peisaje Urbane', 'Tehnica Impasto', 'Apusuri Dramatice']
+  });
+
+  useEffect(() => {
+    loadAboutContent();
+  }, []);
+
+  const loadAboutContent = async () => {
+    try {
+      const response = await axios.get('/api/about-content');
+      setAboutContent(response.data);
+    } catch (error) {
+      console.error('Error loading about content:', error);
+    }
+  };
   return (
     <div className="min-h-screen bg-white">
       {/* Despre Victoria Ocara - Artist Page */}
@@ -20,27 +47,25 @@ export default function DesprePage() {
             {/* Text Content */}
             <div className="order-2 lg:order-1">
               <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-6">
-                Victoria Ocara
+                {aboutContent.title}
               </h1>
               <div className="text-xl text-gray-700 mb-8 space-y-4">
                 <p className="flex items-center gap-2">
-                  🎨 <span className="font-semibold">Artistă specializată în pictura cu ulei</span>
+                  🎨 <span className="font-semibold">{aboutContent.subtitle}</span>
                 </p>
-                <p className="flex items-center gap-2">
-                  🗼 <span>Peisaje urbane și iconice - Paris, Turnul Eiffel</span>
+                <p className="text-lg leading-relaxed">
+                  {aboutContent.description}
                 </p>
-                <p className="flex items-center gap-2">
-                  ✨ <span>Tehnica impasto pentru texturi expresive</span>
-                </p>
-                <p className="flex items-center gap-2 text-blue-600 font-medium">
-                  💙 <span>Paleta de albastru și portocaliu</span>
-                </p>
-                <p className="flex items-center gap-2 text-accent font-medium">
-                  🌅 <span>Specializată în apusuri dramatice</span>
-                </p>
-                <p className="flex items-center gap-2 text-green-600 font-medium">
-                  📝 <span>Comisii personalizate disponibile</span>
-                </p>
+                <div className="flex flex-wrap gap-3 mt-6">
+                  {aboutContent.specialties.map((specialty, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                    >
+                      {specialty}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {/* Social Links */}
@@ -87,8 +112,8 @@ export default function DesprePage() {
               <div className="relative">
                 <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/uploads/victoria-studio-photo.jpg"
-                    alt="Victoria Ocara în atelierul său cu tabloul Turnului Eiffel"
+                    src={aboutContent.artistPhoto}
+                    alt={`${aboutContent.title} în atelierul său`}
                     fill
                     className="object-cover"
                     priority
