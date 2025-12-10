@@ -27,17 +27,24 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
     >
       <Link href={`/tablou/${painting.slug}`}>
         <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-          {painting.images && painting.images[0] ? (
+          {painting.images && painting.images[0] && painting.images[0].url ? (
             <Image
               src={painting.images[0].url}
               alt={painting.images[0].alt || painting.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onError={(e) => {
+                console.error('Image load error:', painting.images[0].url);
+                e.currentTarget.style.display = 'none';
+              }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-400">
-              Fără imagine
+              <div className="text-center">
+                <div className="text-4xl mb-2">🎨</div>
+                <div>Fără imagine</div>
+              </div>
             </div>
           )}
         </div>

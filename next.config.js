@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost', 'res.cloudinary.com'],
+    domains: [
+      'localhost', 
+      'res.cloudinary.com',
+      'cdn.shopify.com',
+      'i.ibb.co',
+      'imgur.com',
+      'i.imgur.com',
+      'images.unsplash.com',
+      'via.placeholder.com'
+    ],
     formats: ['image/avif', 'image/webp'],
   },
   typescript: {

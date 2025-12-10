@@ -283,18 +283,21 @@ export default function AdminPaintingsPage() {
 
               <div>
                 <label className="block text-sm font-medium mb-2">Imagini</label>
+                <p className="text-sm text-gray-600 mb-2">
+                  Folosește servicii precum Cloudinary, ImgBB, sau Imgur pentru găzduirea imaginilor
+                </p>
                 {formData.images.map((img, idx) => (
                   <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
                     <input
                       type="url"
-                      placeholder="URL imagine"
+                      placeholder="https://example.com/image.jpg"
                       value={img.url}
                       onChange={(e) => updateImage(idx, 'url', e.target.value)}
                       className="w-full px-4 py-2 border rounded-lg"
                     />
                     <input
                       type="text"
-                      placeholder="Text alternativ"
+                      placeholder="Descriere imagine"
                       value={img.alt}
                       onChange={(e) => updateImage(idx, 'alt', e.target.value)}
                       className="w-full px-4 py-2 border rounded-lg"
@@ -308,6 +311,13 @@ export default function AdminPaintingsPage() {
                 >
                   + Adaugă altă imagine
                 </button>
+                
+                <div className="mt-2 text-xs text-gray-500">
+                  <strong>Servicii recomandate pentru imagini:</strong><br/>
+                  • Cloudinary (cloudinary.com) - 25GB gratuit<br/>
+                  • ImgBB (imgbb.com) - upload gratuit<br/>
+                  • Imgur (imgur.com) - upload gratuit
+                </div>
               </div>
 
               <div className="flex gap-4">
