@@ -1,13 +1,49 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AboutSection from '@/components/AboutSection';
 import FeaturedPaintings from '@/components/FeaturedPaintings';
 import { useLanguage } from '@/context/LanguageContext';
+import axios from 'axios';
 
 export default function Home() {
   const { t } = useLanguage();
+  const [adminContent, setAdminContent] = useState<any>(null);
+
+  useEffect(() => {
+    // Încearcă să încarce conținutul din admin
+    const fetchAdminContent = async () => {
+      try {
+        const res = await axios.get('/api/content?key=homepage');
+        if (res.data && res.data.content) {
+          setAdminContent(res.data.content);
+        }
+      } catch (error) {
+        console.log('No admin content found, using translations');
+      }
+    };
+
+    fetchAdminContent();
+  }, []);
+
+  // Folosește conținutul admin dacă este disponibil, altfel traducerile
+  const getTitle = () => {
+    if (adminContent?.heroTitle) {
+      const { language } = useLanguage();
+      return adminContent.heroTitle[language] || adminContent.heroTitle.en || adminContent.heroTitle;
+    }
+    return t('home.hero.title');
+  };
+
+  const getSubtitle = () => {
+    if (adminContent?.heroSubtitle) {
+      const { language } = useLanguage();
+      return adminContent.heroSubtitle[language] || adminContent.heroSubtitle.en || adminContent.heroSubtitle;
+    }
+    return t('home.hero.subtitle');
+  };
 
   return (
     <div>
@@ -30,10 +66,10 @@ export default function Home() {
         {/* Content */}
         <div className="relative z-10 text-center px-4 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 drop-shadow-2xl leading-tight">
-            {t('home.hero.title')}
+            {getTitle()}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow-lg leading-relaxed">
-            {t('home.hero.subtitle')}
+            {getSubtitle()}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
