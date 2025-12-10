@@ -130,6 +130,15 @@ export default function AdminDashboard() {
             <h2 className="text-xl font-semibold mb-2">Traduceri</h2>
             <p className="text-gray-600">Gestionează traducerile EN/RO</p>
           </Link>
+
+          <Link
+            href="/admin/techniques"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <div className="text-4xl mb-4">🎨</div>
+            <h2 className="text-xl font-semibold mb-2">Tehnici Pictură</h2>
+            <p className="text-gray-600">Gestionează tehnicile de pictură</p>
+          </Link>
         </div>
 
         {/* Debug & Tools Section */}

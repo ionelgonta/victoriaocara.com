@@ -47,7 +47,15 @@ export default function AdminPaintingsPage() {
       return;
     }
     fetchPaintings();
+    loadCustomTechniques();
   }, [router]);
+
+  const loadCustomTechniques = () => {
+    const saved = localStorage.getItem('customTechniques');
+    if (saved) {
+      setCustomTechniques(JSON.parse(saved));
+    }
+  };
 
   const fetchPaintings = async () => {
     try {
@@ -203,7 +211,12 @@ export default function AdminPaintingsPage() {
         en: newTechnique.en.trim(),
         ro: newTechnique.ro.trim()
       };
-      setCustomTechniques([...customTechniques, technique]);
+      const updatedTechniques = [...customTechniques, technique];
+      setCustomTechniques(updatedTechniques);
+      
+      // Salvează în localStorage
+      localStorage.setItem('customTechniques', JSON.stringify(updatedTechniques));
+      
       setNewTechnique({ en: '', ro: '' });
       setShowCustomTechniqueForm(false);
       
