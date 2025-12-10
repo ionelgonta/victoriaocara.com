@@ -62,17 +62,9 @@ export default function PaintingPage() {
                 src={painting.images[selectedImage].url}
                 alt={painting.images[selectedImage].alt || painting.title}
                 fill
-                className={`object-cover ${painting.sold ? 'grayscale opacity-75' : ''}`}
+                className="object-cover"
                 priority
               />
-            )}
-            
-            {painting.sold && (
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold text-xl transform rotate-12">
-                  VÂNDUT
-                </div>
-              </div>
             )}
           </motion.div>
 
