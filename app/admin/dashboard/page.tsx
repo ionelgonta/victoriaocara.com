@@ -83,7 +83,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Link
             href="/admin/paintings"
             className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
@@ -119,6 +119,39 @@ export default function AdminDashboard() {
             <h2 className="text-xl font-semibold mb-2">Conținut Site</h2>
             <p className="text-gray-600">Editează conținutul paginii principale</p>
           </Link>
+        </div>
+
+        {/* Debug & Tools Section */}
+        <div className="mb-8">
+          <h3 className="text-2xl font-semibold mb-6">Instrumente de Debug & Testing</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link
+              href="/admin/sitemap"
+              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all text-center"
+            >
+              <FiFileText className="w-12 h-12 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Sitemap Admin</h3>
+              <p className="text-purple-100 text-sm">Toate paginile și link-urile site-ului</p>
+            </Link>
+
+            <Link
+              href="/setup-complete"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-center"
+            >
+              <FiPackage className="w-12 h-12 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Setup Complet</h3>
+              <p className="text-blue-100 text-sm">Verifică și configurează totul</p>
+            </Link>
+
+            <Link
+              href="/debug-gallery"
+              className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg hover:from-green-600 hover:to-green-700 transition-all text-center"
+            >
+              <FiImage className="w-12 h-12 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Debug Gallery</h3>
+              <p className="text-green-100 text-sm">Testează API-urile pentru tablouri</p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
