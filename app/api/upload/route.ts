@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
 import { isAdmin } from '@/lib/authHelpers';
+import dbConnect from '@/lib/mongodb';
+
+// Model pentru imagini (salvăm în MongoDB ca base64)
+interface ImageDocument {
+  filename: string;
+  originalName: string;
+  mimeType: string;
+  size: number;
+  data: string; // base64
+  uploadedAt: Date;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,15 +40,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File must be an image' }, { status: 400 });
     }
 
-    // Verifică mărimea (max 5MB)
+    // Verifică mărimea (max 2MB pentru base64)
     console.log('File size:', file.size);
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 });
+    if (file.size > 2 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File size must be less than 2MB' }, { status: 400 });
     }
 
-    console.log('Converting file to buffer...');
+    console.log('Converting file to base64...');
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const base64Data = buffer.toString('base64');
+    const dataUrl = `data:${file.type};base64,${base64Data}`;
 
     // Creează numele fișierului unic
     const timestamp = Date.now();
@@ -47,38 +58,62 @@ export async function POST(req: NextRequest) {
     const fileName = `${timestamp}_${originalName}`;
     console.log('Generated filename:', fileName);
 
-    // Creează directorul uploads dacă nu există
-    const uploadsDir = join(process.cwd(), 'public', 'uploads');
-    console.log('Uploads directory:', uploadsDir);
-    
+    // Salvează în MongoDB
     try {
-      await mkdir(uploadsDir, { recursive: true });
-      console.log('Directory created/verified');
-    } catch (error) {
-      console.log('Directory already exists or error:', error);
+      await dbConnect();
+      
+      // Pentru simplitate, salvăm direct în colecția images
+      const { MongoClient } = require('mongodb');
+      const client = new MongoClient(process.env.MONGODB_URI);
+      await client.connect();
+      
+      const db = client.db('art-gallery');
+      const collection = db.collection('images');
+      
+      const imageDoc: ImageDocument = {
+        filename: fileName,
+        originalName: file.name,
+        mimeType: file.type,
+        size: file.size,
+        data: base64Data,
+        uploadedAt: new Date()
+      };
+      
+      const result = await collection.insertOne(imageDoc);
+      await client.close();
+      
+      console.log('Image saved to MongoDB:', result.insertedId);
+      
+      // Returnează data URL pentru afișare imediată
+      return NextResponse.json({
+        success: true,
+        url: dataUrl,
+        id: result.insertedId,
+        fileName: fileName,
+        originalName: file.name,
+        size: file.size
+      });
+      
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      
+      // Fallback: returnează direct data URL (temporar)
+      console.log('Using fallback: returning data URL directly');
+      return NextResponse.json({
+        success: true,
+        url: dataUrl,
+        fileName: fileName,
+        originalName: file.name,
+        size: file.size,
+        note: 'Image stored temporarily as base64'
+      });
     }
-
-    // Salvează fișierul
-    const filePath = join(uploadsDir, fileName);
-    console.log('Saving file to:', filePath);
-    
-    await writeFile(filePath, buffer);
-    console.log('File saved successfully');
-
-    // Returnează URL-ul public
-    const publicUrl = `/uploads/${fileName}`;
-    console.log('Public URL:', publicUrl);
-
-    return NextResponse.json({
-      success: true,
-      url: publicUrl,
-      fileName: fileName,
-      originalName: file.name,
-      size: file.size
-    });
 
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Upload failed', 
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }

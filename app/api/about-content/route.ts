@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
-import { writeFile } from 'fs/promises';
-import path from 'path';
 
 // Model pentru conținutul paginii Despre
 interface AboutContent {
@@ -12,16 +10,22 @@ interface AboutContent {
   specialties: string[];
 }
 
-// Salvăm conținutul într-un fișier JSON pentru simplitate
-const ABOUT_CONTENT_FILE = path.join(process.cwd(), 'data', 'about-content.json');
-
 export async function GET() {
   try {
-    // Încearcă să citească fișierul existent
-    const fs = require('fs');
-    if (fs.existsSync(ABOUT_CONTENT_FILE)) {
-      const content = fs.readFileSync(ABOUT_CONTENT_FILE, 'utf8');
-      return NextResponse.json(JSON.parse(content));
+    await dbConnect();
+    
+    const { MongoClient } = require('mongodb');
+    const client = new MongoClient(process.env.MONGODB_URI);
+    await client.connect();
+    
+    const db = client.db('art-gallery');
+    const collection = db.collection('about-content');
+    
+    const content = await collection.findOne({ type: 'about-page' });
+    await client.close();
+    
+    if (content) {
+      return NextResponse.json(content);
     }
     
     // Returnează conținutul implicit
@@ -49,15 +53,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Title and artist photo are required' }, { status: 400 });
     }
     
-    // Creează directorul data dacă nu există
-    const fs = require('fs');
-    const dataDir = path.join(process.cwd(), 'data');
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
+    await dbConnect();
     
-    // Salvează conținutul în fișier
-    await writeFile(ABOUT_CONTENT_FILE, JSON.stringify(aboutContent, null, 2));
+    const { MongoClient } = require('mongodb');
+    const client = new MongoClient(process.env.MONGODB_URI);
+    await client.connect();
+    
+    const db = client.db('art-gallery');
+    const collection = db.collection('about-content');
+    
+    // Upsert (update sau insert)
+    const result = await collection.replaceOne(
+      { type: 'about-page' },
+      { 
+        type: 'about-page',
+        ...aboutContent,
+        updatedAt: new Date()
+      },
+      { upsert: true }
+    );
+    
+    await client.close();
     
     return NextResponse.json({ 
       success: true, 

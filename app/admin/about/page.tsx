@@ -26,6 +26,19 @@ export default function AdminAboutPage() {
     specialties: ['Pictura cu Ulei', 'Peisaje Urbane', 'Tehnica Impasto', 'Apusuri Dramatice']
   });
 
+  useEffect(() => {
+    loadAboutContent();
+  }, []);
+
+  const loadAboutContent = async () => {
+    try {
+      const response = await axios.get('/api/about-content');
+      setAboutContent(response.data);
+    } catch (error) {
+      console.error('Error loading about content:', error);
+    }
+  };
+
   const handleImageUpload = (imageUrl: string) => {
     setAboutContent(prev => ({
       ...prev,
