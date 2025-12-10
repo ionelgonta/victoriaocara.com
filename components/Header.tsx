@@ -14,6 +14,7 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: 'Acasă' },
     { href: '/galerie', label: 'Galerie' },
+    { href: '/despre', label: 'Despre' },
     { href: '/contact', label: 'Contact' },
   ];
 

@@ -5,9 +5,15 @@ import PaintingCard from '@/components/PaintingCard';
 async function getFeaturedPaintings() {
   try {
     // Construiește URL-ul dinamic pentru a funcționa și pe Vercel
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                   'http://localhost:3000';
+    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    
+    if (!baseUrl) {
+      if (process.env.VERCEL_URL) {
+        baseUrl = `https://${process.env.VERCEL_URL}`;
+      } else {
+        baseUrl = 'http://localhost:3000';
+      }
+    }
     
     console.log('Fetching featured paintings from:', `${baseUrl}/api/paintings?featured=true`);
     

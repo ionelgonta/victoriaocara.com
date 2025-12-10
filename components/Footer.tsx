@@ -27,6 +27,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/despre" className="text-gray-300 hover:text-white transition-colors">
+                  Despre
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-gray-300 hover:text-white transition-colors">
                   Contact
                 </Link>
@@ -38,24 +43,27 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Urmărește-ne</h4>
             <div className="flex gap-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/victoria.ocara"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
+                title="Facebook"
               >
                 <FiFacebook className="w-6 h-6" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/victoria.ocara/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-white transition-colors"
+                title="Instagram"
               >
                 <FiInstagram className="w-6 h-6" />
               </a>
               <a
-                href="mailto:contact@artgallery.ro"
+                href="mailto:admin@victoriaocara.com"
                 className="text-gray-300 hover:text-white transition-colors"
+                title="Email"
               >
                 <FiMail className="w-6 h-6" />
               </a>

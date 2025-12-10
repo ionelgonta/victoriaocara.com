@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { formatPrice } from '@/lib/utils';
@@ -66,9 +66,18 @@ export default function CheckoutPage() {
     }
   };
 
+  useEffect(() => {
+    if (cart.length === 0) {
+      router.push('/cart');
+    }
+  }, [cart.length, router]);
+
   if (cart.length === 0) {
-    router.push('/cart');
-    return null;
+    return (
+      <div className="container mx-auto px-4 py-12 text-center">
+        <p>Redirecționare către coș...</p>
+      </div>
+    );
   }
 
   return (
