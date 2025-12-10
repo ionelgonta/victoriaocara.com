@@ -171,6 +171,15 @@ export default function AdminDashboard() {
               <h3 className="text-lg font-semibold mb-2">Debug Gallery</h3>
               <p className="text-green-100 text-sm">Testează API-urile pentru tablouri</p>
             </Link>
+
+            <Link
+              href="/admin/migrate-techniques"
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all text-center"
+            >
+              <div className="text-4xl mb-3">🔄</div>
+              <h3 className="text-lg font-semibold mb-2">Migrare Tehnici</h3>
+              <p className="text-orange-100 text-sm">Actualizează tehnicile vechi la formatul bilingv</p>
+            </Link>
           </div>
         </div>
       </div>
