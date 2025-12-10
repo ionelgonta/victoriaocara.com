@@ -3,21 +3,6 @@ import dbConnect from '@/lib/mongodb';
 import SimilarRequest from '@/models/SimilarRequest';
 import { isAdmin } from '@/lib/authHelpers';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    await dbConnect();
-    const request = await SimilarRequest.findById(params.id).populate('soldPaintingId');
-    
-    if (!request) {
-      return NextResponse.json({ error: 'Request not found' }, { status: 404 });
-    }
-    
-    return NextResponse.json(request);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch request' }, { status: 500 });
-  }
-}
-
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     if (!isAdmin(req)) {
@@ -27,32 +12,27 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     await dbConnect();
     const data = await req.json();
     
-    const updateData: any = {
-      status: data.status,
-      respondedAt: new Date(),
-    };
-
-    if (data.adminNotes) {
-      updateData.adminNotes = data.adminNotes;
-    }
-
-    if (data.estimatedPrice) {
-      updateData.estimatedPrice = data.estimatedPrice;
-    }
-
-    if (data.estimatedDelivery) {
-      updateData.estimatedDelivery = data.estimatedDelivery;
-    }
+    // Update the request
+    const updatedRequest = await SimilarRequest.findByIdAndUpdate(
+      params.id,
+      {
+        ...data,
+        respondedAt: data.status !== 'pending' ? new Date() : undefined
+      },
+      { new: true }
+    ).populate('soldPaintingId', 'title slug price images');
     
-    const request = await SimilarRequest.findByIdAndUpdate(params.id, updateData, { new: true });
-    
-    if (!request) {
+    if (!updatedRequest) {
       return NextResponse.json({ error: 'Request not found' }, { status: 404 });
     }
     
-    return NextResponse.json(request);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update request' }, { status: 500 });
+    return NextResponse.json(updatedRequest);
+  } catch (error: any) {
+    console.error('Update similar request error:', error);
+    return NextResponse.json({ 
+      error: 'Failed to update request',
+      details: error.message 
+    }, { status: 500 });
   }
 }
 
@@ -63,14 +43,19 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     }
 
     await dbConnect();
-    const request = await SimilarRequest.findByIdAndDelete(params.id);
     
-    if (!request) {
+    const deletedRequest = await SimilarRequest.findByIdAndDelete(params.id);
+    
+    if (!deletedRequest) {
       return NextResponse.json({ error: 'Request not found' }, { status: 404 });
     }
     
-    return NextResponse.json({ message: 'Request deleted' });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to delete request' }, { status: 500 });
+    return NextResponse.json({ message: 'Request deleted successfully' });
+  } catch (error: any) {
+    console.error('Delete similar request error:', error);
+    return NextResponse.json({ 
+      error: 'Failed to delete request',
+      details: error.message 
+    }, { status: 500 });
   }
 }
