@@ -33,9 +33,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
               src={painting.images[0].url}
               alt={painting.images[0].alt || painting.title}
               fill
-              className={`object-cover group-hover:scale-105 transition-transform duration-500 ${
-                painting.sold ? 'grayscale opacity-75' : ''
-              }`}
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               onError={(e) => {
                 console.error('Image load error:', painting.images[0].url);
@@ -50,14 +48,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
               </div>
             </div>
           )}
-          
-          {painting.sold && (
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-              <div className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transform rotate-12">
-                VÂNDUT
-              </div>
-            </div>
-          )}
+
         </div>
         <div className="mt-4">
           <h3 className="text-lg font-serif font-semibold text-primary group-hover:text-accent transition-colors">
@@ -69,7 +60,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
           <p className="text-sm text-gray-500">{painting.technique}</p>
           
           <div className="flex items-center justify-between mt-3">
-            <p className={`text-xl font-semibold ${
+            <p className={`text-xl ${
               painting.sold ? 'text-gray-400' : 'text-primary'
             }`}>
               {formatPrice(painting.price)}
