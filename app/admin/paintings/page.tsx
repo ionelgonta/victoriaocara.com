@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
+import ImageUpload from '@/components/ImageUpload';
 
 export default function AdminPaintingsPage() {
   const router = useRouter();
@@ -157,9 +158,12 @@ export default function AdminPaintingsPage() {
     });
   };
 
-  const updateImage = (index: number, field: 'url' | 'alt', value: string) => {
+  const updateImage = (index: number, field: 'url' | 'alt', value: string, altValue?: string) => {
     const newImages = [...formData.images];
     newImages[index][field] = value;
+    if (field === 'url' && altValue !== undefined) {
+      newImages[index]['alt'] = altValue;
+    }
     setFormData({ ...formData, images: newImages });
   };
 
@@ -282,42 +286,41 @@ export default function AdminPaintingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Imagini</label>
-                <p className="text-sm text-gray-600 mb-2">
-                  Folosește servicii precum Cloudinary, ImgBB, sau Imgur pentru găzduirea imaginilor
-                </p>
+                <label className="block text-sm font-medium mb-4">Imagini Tablou</label>
+                
                 {formData.images.map((img, idx) => (
-                  <div key={idx} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-                    <input
-                      type="url"
-                      placeholder="https://example.com/image.jpg"
-                      value={img.url}
-                      onChange={(e) => updateImage(idx, 'url', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Descriere imagine"
-                      value={img.alt}
-                      onChange={(e) => updateImage(idx, 'alt', e.target.value)}
-                      className="w-full px-4 py-2 border rounded-lg"
+                  <div key={idx} className="mb-6 p-4 border rounded-lg bg-gray-50">
+                    <div className="flex justify-between items-center mb-3">
+                      <h4 className="font-medium">Imagine {idx + 1}</h4>
+                      {formData.images.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newImages = formData.images.filter((_, i) => i !== idx);
+                            setFormData({ ...formData, images: newImages });
+                          }}
+                          className="text-red-500 hover:text-red-700 text-sm"
+                        >
+                          Șterge
+                        </button>
+                      )}
+                    </div>
+                    
+                    <ImageUpload
+                      onImageUploaded={(url, alt) => updateImage(idx, 'url', url, alt)}
+                      existingUrl={img.url}
+                      existingAlt={img.alt}
                     />
                   </div>
                 ))}
+                
                 <button
                   type="button"
                   onClick={addImageField}
-                  className="text-sm text-accent hover:underline"
+                  className="flex items-center gap-2 text-accent hover:text-primary font-medium"
                 >
-                  + Adaugă altă imagine
+                  <FiPlus /> Adaugă altă imagine
                 </button>
-                
-                <div className="mt-2 text-xs text-gray-500">
-                  <strong>Servicii recomandate pentru imagini:</strong><br/>
-                  • Cloudinary (cloudinary.com) - 25GB gratuit<br/>
-                  • ImgBB (imgbb.com) - upload gratuit<br/>
-                  • Imgur (imgur.com) - upload gratuit
-                </div>
               </div>
 
               <div className="flex gap-4">
