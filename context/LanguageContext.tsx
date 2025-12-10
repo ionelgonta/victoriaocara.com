@@ -57,6 +57,9 @@ const translations = {
     'painting.notFound.message': 'Sorry, this painting does not exist.',
     'painting.loading': 'Loading...',
     
+    // Related Paintings
+    'related.title': 'You Might Also Like',
+
     // Price Offer
     'offer.title': 'Make an Offer',
     'offer.currentPrice': 'Current Price',
@@ -239,6 +242,9 @@ const translations = {
     'painting.notFound.message': 'Ne pare rău, acest tablou nu există.',
     'painting.loading': 'Se încarcă...',
     
+    // Related Paintings
+    'related.title': 'Ți-ar putea plăcea și',
+
     // Price Offer
     'offer.title': 'Fă o Ofertă',
     'offer.currentPrice': 'Preț Actual',

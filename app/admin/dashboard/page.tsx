@@ -191,6 +191,15 @@ export default function AdminDashboard() {
               <h3 className="text-lg font-semibold mb-2">Migrare Tehnici</h3>
               <p className="text-orange-100 text-sm">Actualizează tehnicile vechi la formatul bilingv</p>
             </Link>
+
+            <Link
+              href="/admin/update-descriptions"
+              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all text-center"
+            >
+              <div className="text-4xl mb-3">📝</div>
+              <h3 className="text-lg font-semibold mb-2">Actualizează Descrieri</h3>
+              <p className="text-purple-100 text-sm">Adaugă descrieri artistice pentru tablouri</p>
+            </Link>
           </div>
         </div>
       </div>

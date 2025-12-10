@@ -9,6 +9,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { formatPrice } from '@/lib/utils';
 import { getTechniqueText } from '@/lib/techniques';
 import PriceOfferForm from '@/components/PriceOfferForm';
+import RelatedPaintings from '@/components/RelatedPaintings';
 import axios from 'axios';
 
 export default function PaintingPage() {
@@ -178,6 +179,13 @@ export default function PaintingPage() {
           </div>
         </div>
       </div>
+
+      {/* Related Paintings Section */}
+      {painting && (
+        <div className="container mx-auto px-4 py-12 border-t border-gray-200">
+          <RelatedPaintings currentPaintingId={painting._id} />
+        </div>
+      )}
 
       {painting && (
         <PriceOfferForm
