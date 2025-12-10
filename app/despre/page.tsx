@@ -87,8 +87,8 @@ export default function DesprePage() {
               <div className="relative">
                 <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/uploads/victoria-artist-photo.jpg"
-                    alt="Victoria Ocara - Artist în atelier"
+                    src="/uploads/victoria-studio-photo.jpg"
+                    alt="Victoria Ocara în atelierul său cu tabloul Turnului Eiffel"
                     fill
                     className="object-cover"
                     priority
