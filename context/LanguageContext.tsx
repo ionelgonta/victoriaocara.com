@@ -18,6 +18,7 @@ const translations = {
     'nav.about': 'About',
     'nav.contact': 'Contact',
     'nav.cart': 'Cart',
+    'nav.language': 'Language',
     
     // Homepage
     'home.hero.title': 'Original Art',
@@ -179,6 +180,7 @@ const translations = {
     'nav.about': 'Despre',
     'nav.contact': 'Contact',
     'nav.cart': 'Coș',
+    'nav.language': 'Limbă',
     
     // Homepage
     'home.hero.title': 'Artă Originală',

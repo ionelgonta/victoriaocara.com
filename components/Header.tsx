@@ -54,7 +54,6 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <LanguageSelector />
           </div>
 
           <button
@@ -90,7 +89,8 @@ export default function Header() {
               >
                 {t('nav.cart')} ({cartCount})
               </Link>
-              <div className="py-2">
+              <div className="py-3 border-t border-gray-200 mt-2">
+                <div className="text-sm text-gray-600 mb-2">{t('nav.language')}:</div>
                 <LanguageSelector />
               </div>
             </motion.div>
