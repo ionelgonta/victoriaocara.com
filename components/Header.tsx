@@ -54,14 +54,17 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            <LanguageSelector />
           </div>
 
-          <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <LanguageSelector />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         <AnimatePresence>
@@ -89,10 +92,6 @@ export default function Header() {
               >
                 {t('nav.cart')} ({cartCount})
               </Link>
-              <div className="py-3 border-t border-gray-200 mt-2">
-                <div className="text-sm text-gray-600 mb-2">{t('nav.language')}:</div>
-                <LanguageSelector />
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
