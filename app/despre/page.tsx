@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 export default function DesprePage() {
   return (
     <div className="min-h-screen bg-white">
+      {/* Despre Victoria Ocara - Artist Page */}
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="container mx-auto px-4">
