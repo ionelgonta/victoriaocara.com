@@ -50,12 +50,16 @@ export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt 
       formData.append('file', file);
 
       const token = localStorage.getItem('adminToken');
+      console.log('Upload token:', token ? 'exists' : 'missing');
+      
       const response = await axios.post('/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       });
+      
+      console.log('Upload response:', response.data);
 
       const uploadedUrl = response.data.url;
       setPreview(uploadedUrl);
@@ -63,7 +67,19 @@ export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt 
       toast.success('Imagine încărcată cu succes!');
     } catch (error: any) {
       console.error('Upload error:', error);
-      toast.error(error.response?.data?.error || 'Eroare la încărcarea imaginii');
+      console.error('Error response:', error.response);
+      
+      let errorMessage = 'Eroare la încărcarea imaginii';
+      
+      if (error.response?.status === 401) {
+        errorMessage = 'Nu ești autentificat ca admin';
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      toast.error(errorMessage);
       setPreview('');
     } finally {
       setUploading(false);
