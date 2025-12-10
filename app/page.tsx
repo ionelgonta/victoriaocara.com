@@ -60,21 +60,21 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">Original Art</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">{t('features.original.title')}</h3>
               <p className="text-gray-600">
-                Each painting is a unique work, created by hand with attention to detail
+                {t('features.original.description')}
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">Safe Delivery</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">{t('features.delivery.title')}</h3>
               <p className="text-gray-600">
-                We pack and ship each painting with maximum care for its safety
+                {t('features.delivery.description')}
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">Secure Payment</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">{t('features.payment.title')}</h3>
               <p className="text-gray-600">
-                We process payments through Stripe for your safety and privacy
+                {t('features.payment.description')}
               </p>
             </div>
           </div>

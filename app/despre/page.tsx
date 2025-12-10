@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiInstagram } from 'react-icons/fi';
 import { SiThreads, SiFacebook } from 'react-icons/si';
+import { useLanguage } from '@/context/LanguageContext';
 import axios from 'axios';
 import { getCachedAboutContent, setCachedAboutContent } from '@/lib/aboutContentCache';
 
@@ -18,6 +19,7 @@ interface AboutContent {
 }
 
 export default function DesprePage() {
+  const { t } = useLanguage();
   const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -87,7 +89,7 @@ export default function DesprePage() {
         
         <div className="text-center py-20">
           <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">Se încarcă conținutul...</p>
+          <p className="text-xl text-gray-600">{t('about.loading')}</p>
         </div>
       </div>
     );
@@ -102,24 +104,28 @@ export default function DesprePage() {
             {/* Text Content */}
             <div className="order-2 lg:order-1">
               <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-6">
-                {aboutContent.title}
+                {t('about.artist.name')}
               </h1>
               <div className="text-xl text-gray-700 mb-8 space-y-4">
                 <p className="flex items-center gap-2">
-                  🎨 <span className="font-semibold">{aboutContent.subtitle}</span>
+                  🎨 <span className="font-semibold">{t('about.artist.subtitle')}</span>
                 </p>
                 <p className="text-lg leading-relaxed">
-                  {aboutContent.description}
+                  {t('about.artist.description')}
                 </p>
                 <div className="flex flex-wrap gap-3 mt-6">
-                  {aboutContent.specialties.map((specialty, index) => (
-                    <span
-                      key={index}
-                      className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-                    >
-                      {specialty}
-                    </span>
-                  ))}
+                  <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                    🎨 {t('about.specialties.oil')}
+                  </span>
+                  <span className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                    🗼 {t('about.specialties.urban')}
+                  </span>
+                  <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                    ✨ {t('about.specialties.impasto')}
+                  </span>
+                  <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                    🌅 {t('about.specialties.sunsets')}
+                  </span>
                 </div>
               </div>
 

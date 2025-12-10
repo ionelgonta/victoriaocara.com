@@ -127,13 +127,13 @@ export default function AboutSection() {
                 href="/despre"
                 className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-accent transition-colors font-semibold"
               >
-                Read My Story
+                {t('about.readStory')}
               </Link>
               <Link
                 href="/contact"
                 className="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold"
               >
-                Commission a Work
+                {t('about.commission')}
               </Link>
             </div>
           </div>
