@@ -24,19 +24,22 @@ export default function DesprePage() {
               </h1>
               <div className="text-xl text-gray-700 mb-8 space-y-4">
                 <p className="flex items-center gap-2">
-                  🎨 <span className="font-semibold">Oil Painter</span>
+                  🎨 <span className="font-semibold">Artistă specializată în pictura cu ulei</span>
                 </p>
                 <p className="flex items-center gap-2">
-                  ✨ <span>Impasto & Blue-focused Art</span>
+                  🗼 <span>Peisaje urbane și iconice - Paris, Turnul Eiffel</span>
                 </p>
                 <p className="flex items-center gap-2">
-                  🌟 <span>Inspired by Monet & Van Gogh</span>
+                  ✨ <span>Tehnica impasto pentru texturi expresive</span>
                 </p>
                 <p className="flex items-center gap-2 text-blue-600 font-medium">
-                  💙 <span>Blue is my language</span>
+                  💙 <span>Paleta de albastru și portocaliu</span>
                 </p>
                 <p className="flex items-center gap-2 text-accent font-medium">
-                  📝 <span>Commissions open</span>
+                  🌅 <span>Specializată în apusuri dramatice</span>
+                </p>
+                <p className="flex items-center gap-2 text-green-600 font-medium">
+                  📝 <span>Comisii personalizate disponibile</span>
                 </p>
               </div>
 
@@ -84,8 +87,8 @@ export default function DesprePage() {
               <div className="relative">
                 <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/uploads/artist-photo.jpg"
-                    alt="Victoria Ocara - Artist"
+                    src="/uploads/victoria-artist-photo.jpg"
+                    alt="Victoria Ocara - Artist în atelier"
                     fill
                     className="object-cover"
                     priority
@@ -124,23 +127,69 @@ export default function DesprePage() {
               </div>
               
               <div className="bg-blue-50 p-8 rounded-2xl">
-                <h4 className="text-xl font-semibold mb-4 text-primary">Inspirații</h4>
+                <h4 className="text-xl font-semibold mb-4 text-primary">Inspirații & Stil</h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
-                    <span>Claude Monet - maestrul luminii și culorii</span>
+                    <span>Peisaje urbane iconice - Paris, Turnul Eiffel</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                    <span>Vincent van Gogh - expresivitatea și pasiunea</span>
+                    <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                    <span>Apusuri și răsărituri dramatice</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
-                    <span>Natura și peisajele marine</span>
+                    <span>Tehnica impasto pentru texturi bogate</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 bg-indigo-400 rounded-full"></div>
-                    <span>Emoțiile și stările sufletești</span>
+                    <span>Paleta de albastru și portocaliu</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                    <span>Inspirație din Monet și Van Gogh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Studio Section */}
+            <div className="bg-gradient-to-r from-orange-50 to-blue-50 p-8 rounded-2xl mb-16">
+              <h3 className="text-2xl font-serif font-semibold mb-6 text-center">
+                În Atelierul Meu
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    Fiecare tablou prinde viață în atelierul meu, unde pasiunea pentru culoare și textură 
+                    se transformă în opere de artă unice. Lucrez cu tehnica impasto, creând straturi groase 
+                    de vopsea care dau dimensiune și viață fiecărei pânze.
+                  </p>
+                  <p className="text-gray-700 leading-relaxed">
+                    Peisajele urbane, în special cele cu Turnul Eiffel, sunt o sursă constantă de inspirație. 
+                    Îmi place să surprind jocul de lumină și umbră, contrastul dintre cerul albastru și 
+                    căldura apusurilor portocalii.
+                  </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-lg">
+                  <h4 className="font-semibold mb-4 text-primary">Procesul Meu Creativ</h4>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-center gap-3">
+                      <span className="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs">1</span>
+                      <span>Schițez compoziția pe pânză</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs">2</span>
+                      <span>Aplic straturile de bază cu pensule late</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="w-6 h-6 bg-yellow-500 text-white rounded-full flex items-center justify-center text-xs">3</span>
+                      <span>Construiesc textura cu tehnica impasto</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs">4</span>
+                      <span>Finalizez detaliile și contrastele</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -154,11 +203,20 @@ export default function DesprePage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-2xl">🎨</span>
+                    <span className="text-white text-2xl">🗼</span>
                   </div>
-                  <h4 className="font-semibold mb-2">Pictura cu Ulei</h4>
+                  <h4 className="font-semibold mb-2">Peisaje Urbane</h4>
                   <p className="text-sm text-gray-600">
-                    Folosesc culori cu ulei pentru profunzime și richețe cromatică
+                    Specializată în peisaje iconice - Turnul Eiffel, Paris
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-white text-2xl">🌅</span>
+                  </div>
+                  <h4 className="font-semibold mb-2">Apusuri Dramatice</h4>
+                  <p className="text-sm text-gray-600">
+                    Captez jocul de lumină și culoare în apusuri spectaculoase
                   </p>
                 </div>
                 <div className="text-center">
@@ -167,16 +225,7 @@ export default function DesprePage() {
                   </div>
                   <h4 className="font-semibold mb-2">Tehnica Impasto</h4>
                   <p className="text-sm text-gray-600">
-                    Straturi groase de vopsea pentru texturi expresive
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white text-2xl">💙</span>
-                  </div>
-                  <h4 className="font-semibold mb-2">Paleta Albastră</h4>
-                  <p className="text-sm text-gray-600">
-                    Accent pe nuanțele de albastru și contrastele complementare
+                    Straturi groase de vopsea pentru texturi expresive și vibrante
                   </p>
                 </div>
               </div>
