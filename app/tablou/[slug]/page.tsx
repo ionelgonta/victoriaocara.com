@@ -10,6 +10,7 @@ import { formatPrice } from '@/lib/utils';
 import { getTechniqueText } from '@/lib/techniques';
 import PriceOfferForm from '@/components/PriceOfferForm';
 import RelatedPaintings from '@/components/RelatedPaintings';
+import SimilarRequestForm from '@/components/SimilarRequestForm';
 import axios from 'axios';
 
 export default function PaintingPage() {
@@ -20,6 +21,7 @@ export default function PaintingPage() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showOfferForm, setShowOfferForm] = useState(false);
+  const [showSimilarRequestForm, setShowSimilarRequestForm] = useState(false);
 
   // Funcții helper pentru a obține textul în limba corectă
   const getTitle = () => {
@@ -154,26 +156,43 @@ export default function PaintingPage() {
           </div>
 
           <div className="space-y-3">
-            <button
-              onClick={() => addToCart(painting)}
-              disabled={painting.stock === 0 || painting.sold}
-              className="w-full bg-primary text-white py-4 rounded-lg hover:bg-accent transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed text-lg font-semibold"
-            >
-              {painting.sold ? t('painting.sold.status') : painting.stock > 0 ? t('painting.addToCart') : t('painting.outOfStock')}
-            </button>
-
-            {painting.negotiable && !painting.sold && (
+            {painting.sold ? (
               <button
-                onClick={() => setShowOfferForm(true)}
-                className="w-full border-2 border-primary text-primary py-4 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 text-lg font-semibold"
+                onClick={() => setShowSimilarRequestForm(true)}
+                className="w-full bg-orange-500 text-white py-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 text-lg font-semibold"
               >
-                {t('offer.button')}
+                {t('similarRequest.button')}
               </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => addToCart(painting)}
+                  disabled={painting.stock === 0}
+                  className="w-full bg-primary text-white py-4 rounded-lg hover:bg-accent transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed text-lg font-semibold"
+                >
+                  {painting.stock > 0 ? t('painting.addToCart') : t('painting.outOfStock')}
+                </button>
+
+                {painting.negotiable && (
+                  <button
+                    onClick={() => setShowOfferForm(true)}
+                    className="w-full border-2 border-primary text-primary py-4 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 text-lg font-semibold"
+                  >
+                    {t('offer.button')}
+                  </button>
+                )}
+              </>
             )}
 
-            {painting.negotiable && (
+            {painting.negotiable && !painting.sold && (
               <p className="text-center text-sm text-gray-600">
                 💰 {t('offer.negotiable')}
+              </p>
+            )}
+
+            {painting.sold && (
+              <p className="text-center text-sm text-orange-600 font-medium">
+                🎨 {t('similarRequest.soldMessage')}
               </p>
             )}
           </div>
@@ -192,6 +211,14 @@ export default function PaintingPage() {
           painting={painting}
           isOpen={showOfferForm}
           onClose={() => setShowOfferForm(false)}
+        />
+      )}
+
+      {painting && (
+        <SimilarRequestForm
+          painting={painting}
+          isOpen={showSimilarRequestForm}
+          onClose={() => setShowSimilarRequestForm(false)}
         />
       )}
     </div>

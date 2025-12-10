@@ -83,7 +83,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8">
           <Link
             href="/admin/paintings"
             className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
@@ -109,6 +109,15 @@ export default function AdminDashboard() {
             <FiDollarSign className="w-16 h-16 mx-auto mb-4 text-green-600" />
             <h2 className="text-xl font-semibold mb-2">Oferte de Preț</h2>
             <p className="text-gray-600">Gestionează ofertele clienților</p>
+          </Link>
+
+          <Link
+            href="/admin/similar-requests"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <div className="text-4xl mb-4">🎨</div>
+            <h2 className="text-xl font-semibold mb-2">Cereri Tablouri Similare</h2>
+            <p className="text-gray-600">Gestionează cererile pentru tablouri personalizate</p>
           </Link>
 
           <Link
