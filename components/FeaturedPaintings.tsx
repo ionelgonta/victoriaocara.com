@@ -54,6 +54,12 @@ export default function FeaturedPaintings() {
             <PaintingCard key={painting._id} painting={painting} />
           ))}
         </div>
+        
+        {featuredPaintings.some((p: any) => p.sold) && (
+          <p className="text-center text-sm text-gray-500 mt-4">
+            * Unele tablouri selectate au fost deja vândute
+          </p>
+        )}
         <div className="text-center mt-12">
           <Link
             href="/galerie"

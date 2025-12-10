@@ -16,7 +16,7 @@ export const generateOrderNumber = (): string => {
 export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('ro-RO', {
     style: 'currency',
-    currency: 'RON',
+    currency: 'EUR',
   }).format(price);
 };
 

@@ -14,6 +14,7 @@ interface PaintingCardProps {
     images: { url: string; alt: string }[];
     technique: string;
     dimensions: { width: number; height: number; unit: string };
+    sold?: boolean;
   };
 }
 
@@ -32,7 +33,9 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
               src={painting.images[0].url}
               alt={painting.images[0].alt || painting.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className={`object-cover group-hover:scale-105 transition-transform duration-500 ${
+                painting.sold ? 'grayscale opacity-75' : ''
+              }`}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               onError={(e) => {
                 console.error('Image load error:', painting.images[0].url);
@@ -47,6 +50,14 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
               </div>
             </div>
           )}
+          
+          {painting.sold && (
+            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transform rotate-12">
+                VÂNDUT
+              </div>
+            </div>
+          )}
         </div>
         <div className="mt-4">
           <h3 className="text-lg font-serif font-semibold text-primary group-hover:text-accent transition-colors">
@@ -56,9 +67,14 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
             {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
           </p>
           <p className="text-sm text-gray-500">{painting.technique}</p>
-          <p className="text-xl font-semibold text-primary mt-2">
+          <p className={`text-xl font-semibold mt-2 ${
+            painting.sold ? 'text-gray-500 line-through' : 'text-primary'
+          }`}>
             {formatPrice(painting.price)}
           </p>
+          {painting.sold && (
+            <p className="text-sm text-red-600 font-medium">Indisponibil</p>
+          )}
         </div>
       </Link>
     </motion.div>

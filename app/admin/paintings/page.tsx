@@ -23,6 +23,7 @@ export default function AdminPaintingsPage() {
     height: '',
     stock: '1',
     featured: false,
+    sold: false,
     images: [{ url: '', alt: '' }],
   });
 
@@ -132,6 +133,7 @@ export default function AdminPaintingsPage() {
       height: painting.dimensions.height.toString(),
       stock: painting.stock.toString(),
       featured: painting.featured,
+      sold: painting.sold || false,
       images: painting.images.length > 0 ? painting.images : [{ url: '', alt: '' }],
     });
     setShowForm(true);
@@ -147,6 +149,7 @@ export default function AdminPaintingsPage() {
       height: '',
       stock: '1',
       featured: false,
+      sold: false,
       images: [{ url: '', alt: '' }],
     });
   };
@@ -217,7 +220,7 @@ export default function AdminPaintingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Preț (RON) *</label>
+                  <label className="block text-sm font-medium mb-2">Preț (EUR) *</label>
                   <input
                     type="number"
                     step="0.01"
@@ -273,7 +276,7 @@ export default function AdminPaintingsPage() {
                 />
               </div>
 
-              <div>
+              <div className="space-y-3">
                 <label className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -282,6 +285,16 @@ export default function AdminPaintingsPage() {
                     className="w-4 h-4"
                   />
                   <span className="text-sm font-medium">Tablou selectat (afișat pe homepage)</span>
+                </label>
+                
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.sold}
+                    onChange={(e) => setFormData({ ...formData, sold: e.target.checked })}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-sm font-medium">Vândut</span>
                 </label>
               </div>
 
@@ -360,7 +373,14 @@ export default function AdminPaintingsPage() {
                 </div>
               )}
               <div className="p-4">
-                <h3 className="font-semibold text-lg mb-2">{painting.title}</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-semibold text-lg">{painting.title}</h3>
+                  {painting.sold && (
+                    <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                      Vândut
+                    </span>
+                  )}
+                </div>
                 <p className="text-gray-600 text-sm mb-2">{painting.technique}</p>
                 <p className="font-bold text-primary mb-4">{formatPrice(painting.price)}</p>
                 <div className="flex gap-2">

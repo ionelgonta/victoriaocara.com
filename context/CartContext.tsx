@@ -38,6 +38,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cart]);
 
   const addToCart = (item: any) => {
+    // Check if item is sold
+    if (item.sold) {
+      toast.error('Acest tablou a fost deja vândut');
+      return;
+    }
+
+    // Check if item is out of stock
+    if (item.stock <= 0) {
+      toast.error('Acest tablou nu este în stoc');
+      return;
+    }
+
     setCart((prev) => {
       const existing = prev.find((i) => i._id === item._id);
       if (existing) {

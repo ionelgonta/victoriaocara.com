@@ -62,9 +62,17 @@ export default function PaintingPage() {
                 src={painting.images[selectedImage].url}
                 alt={painting.images[selectedImage].alt || painting.title}
                 fill
-                className="object-cover"
+                className={`object-cover ${painting.sold ? 'grayscale opacity-75' : ''}`}
                 priority
               />
+            )}
+            
+            {painting.sold && (
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-red-600 text-white px-6 py-3 rounded-lg font-bold text-xl transform rotate-12">
+                  VÂNDUT
+                </div>
+              </div>
             )}
           </motion.div>
 
@@ -105,7 +113,11 @@ export default function PaintingPage() {
             <div>
               <span className="font-semibold">Tehnică:</span> {painting.technique}
             </div>
-            {painting.stock > 0 ? (
+            {painting.sold ? (
+              <div className="text-red-600">
+                <span className="font-semibold">Vândut</span>
+              </div>
+            ) : painting.stock > 0 ? (
               <div className="text-green-600">
                 <span className="font-semibold">Disponibil</span>
               </div>
@@ -123,10 +135,10 @@ export default function PaintingPage() {
 
           <button
             onClick={() => addToCart(painting)}
-            disabled={painting.stock === 0}
+            disabled={painting.stock === 0 || painting.sold}
             className="w-full bg-primary text-white py-4 rounded-lg hover:bg-accent transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed text-lg font-semibold"
           >
-            {painting.stock > 0 ? 'Adaugă în Coș' : 'Stoc Epuizat'}
+            {painting.sold ? 'Vândut' : painting.stock > 0 ? 'Adaugă în Coș' : 'Stoc Epuizat'}
           </button>
         </div>
       </div>

@@ -8,6 +8,7 @@ export default function GaleriePage() {
   const [paintings, setPaintings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showSold, setShowSold] = useState(true);
 
   useEffect(() => {
     loadPaintings();
@@ -34,14 +35,32 @@ export default function GaleriePage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-5xl font-serif font-bold text-center mb-4">Galerie</h1>
-      <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+      <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
         Explorează colecția noastră completă de tablouri originale
       </p>
+
+      {/* Filter Controls */}
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showSold}
+              onChange={(e) => setShowSold(e.target.checked)}
+              className="w-4 h-4"
+            />
+            <span className="text-sm font-medium">Afișează tablourile vândute</span>
+          </label>
+        </div>
+      </div>
 
       {/* Debug Info */}
       <div className="mb-8 p-4 bg-gray-100 rounded-lg text-sm">
         <p><strong>Status:</strong> {loading ? 'Se încarcă...' : 'Încărcat'}</p>
         <p><strong>Tablouri găsite:</strong> {paintings.length}</p>
+        <p><strong>Disponibile:</strong> {paintings.filter((p: any) => !p.sold).length}</p>
+        <p><strong>Vândute:</strong> {paintings.filter((p: any) => p.sold).length}</p>
+        <p><strong>Afișate:</strong> {paintings.filter((p: any) => showSold || !p.sold).length}</p>
         {error && <p className="text-red-600"><strong>Eroare:</strong> {error}</p>}
         <button 
           onClick={loadPaintings}
@@ -77,9 +96,11 @@ export default function GaleriePage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {paintings.map((painting: any) => (
-            <PaintingCard key={painting._id} painting={painting} />
-          ))}
+          {paintings
+            .filter((painting: any) => showSold || !painting.sold)
+            .map((painting: any) => (
+              <PaintingCard key={painting._id} painting={painting} />
+            ))}
         </div>
       )}
     </div>
