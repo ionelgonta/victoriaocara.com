@@ -47,6 +47,28 @@ export default function AdminPaintingsPage() {
     e.preventDefault();
     const token = localStorage.getItem('adminToken');
 
+    // Validare frontend
+    if (!formData.title.trim()) {
+      toast.error('Titlul este obligatoriu');
+      return;
+    }
+    if (!formData.description.trim()) {
+      toast.error('Descrierea este obligatorie');
+      return;
+    }
+    if (!formData.price || parseFloat(formData.price) <= 0) {
+      toast.error('Prețul trebuie să fie mai mare ca 0');
+      return;
+    }
+    if (!formData.width || parseFloat(formData.width) <= 0) {
+      toast.error('Lățimea trebuie să fie mai mare ca 0');
+      return;
+    }
+    if (!formData.height || parseFloat(formData.height) <= 0) {
+      toast.error('Înălțimea trebuie să fie mai mare ca 0');
+      return;
+    }
+
     const data = {
       ...formData,
       price: parseFloat(formData.price),
@@ -75,8 +97,10 @@ export default function AdminPaintingsPage() {
       setEditingId(null);
       resetForm();
       fetchPaintings();
-    } catch (error) {
-      toast.error('Eroare la salvarea tabloului');
+    } catch (error: any) {
+      console.error('Save painting error:', error);
+      const errorMessage = error.response?.data?.error || error.response?.data?.details || 'Eroare la salvarea tabloului';
+      toast.error(errorMessage);
     }
   };
 

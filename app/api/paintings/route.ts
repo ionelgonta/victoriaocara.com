@@ -29,11 +29,32 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const data = await req.json();
     
+    // Validare date
+    if (!data.title || !data.description || !data.price || !data.technique) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Validare dimensiuni
+    if (!data.dimensions || !data.dimensions.width || !data.dimensions.height) {
+      return NextResponse.json({ error: 'Missing dimensions' }, { status: 400 });
+    }
+
     const slug = generateSlug(data.title);
+    
+    // Verifică dacă slug-ul există deja
+    const existingPainting = await Painting.findOne({ slug });
+    if (existingPainting) {
+      return NextResponse.json({ error: 'A painting with this title already exists' }, { status: 400 });
+    }
+
     const painting = await Painting.create({ ...data, slug });
     
     return NextResponse.json(painting, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to create painting' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Create painting error:', error);
+    return NextResponse.json({ 
+      error: 'Failed to create painting',
+      details: error.message 
+    }, { status: 500 });
   }
 }
