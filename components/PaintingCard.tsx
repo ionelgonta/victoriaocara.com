@@ -9,18 +9,39 @@ import { useLanguage } from '@/context/LanguageContext';
 interface PaintingCardProps {
   painting: {
     _id: string;
-    title: string;
+    title: {
+      en: string;
+      ro: string;
+    } | string;
     slug: string;
     price: number;
     images: { url: string; alt: string }[];
-    technique: string;
+    technique: {
+      en: string;
+      ro: string;
+    } | string;
     dimensions: { width: number; height: number; unit: string };
     sold?: boolean;
   };
 }
 
 export default function PaintingCard({ painting }: PaintingCardProps) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Funcții helper pentru a obține textul în limba corectă
+  const getTitle = () => {
+    if (typeof painting.title === 'object') {
+      return painting.title[language] || painting.title.en;
+    }
+    return painting.title;
+  };
+  
+  const getTechnique = () => {
+    if (typeof painting.technique === 'object') {
+      return painting.technique[language] || painting.technique.en;
+    }
+    return painting.technique;
+  };
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -33,7 +54,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
           {painting.images && painting.images[0] && painting.images[0].url ? (
             <Image
               src={painting.images[0].url}
-              alt={painting.images[0].alt || painting.title}
+              alt={painting.images[0].alt || getTitle()}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -54,12 +75,12 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
         </div>
         <div className="mt-4">
           <h3 className="text-lg font-serif font-semibold text-primary group-hover:text-accent transition-colors">
-            {painting.title}
+            {getTitle()}
           </h3>
           <p className="text-sm text-gray-600 mt-1">
             {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
           </p>
-          <p className="text-sm text-gray-500">{painting.technique}</p>
+          <p className="text-sm text-gray-500">{getTechnique()}</p>
           
           <div className="flex items-center justify-between mt-3">
             <p className={`text-xl ${

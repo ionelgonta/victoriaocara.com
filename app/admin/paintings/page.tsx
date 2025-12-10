@@ -15,10 +15,19 @@ export default function AdminPaintingsPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: {
+      en: '',
+      ro: ''
+    },
+    description: {
+      en: '',
+      ro: ''
+    },
     price: '',
-    technique: '',
+    technique: {
+      en: '',
+      ro: ''
+    },
     width: '',
     height: '',
     stock: '1',
@@ -51,12 +60,16 @@ export default function AdminPaintingsPage() {
     console.log('Admin token:', token ? 'exists' : 'missing');
 
     // Validare frontend
-    if (!formData.title.trim()) {
-      toast.error('Titlul este obligatoriu');
+    if (!formData.title.en.trim() || !formData.title.ro.trim()) {
+      toast.error('Titlul este obligatoriu în ambele limbi');
       return;
     }
-    if (!formData.description.trim()) {
-      toast.error('Descrierea este obligatorie');
+    if (!formData.description.en.trim() || !formData.description.ro.trim()) {
+      toast.error('Descrierea este obligatorie în ambele limbi');
+      return;
+    }
+    if (!formData.technique.en.trim() || !formData.technique.ro.trim()) {
+      toast.error('Tehnica este obligatorie în ambele limbi');
       return;
     }
     if (!formData.price || parseFloat(formData.price) <= 0) {
@@ -125,10 +138,19 @@ export default function AdminPaintingsPage() {
   const handleEdit = (painting: any) => {
     setEditingId(painting._id);
     setFormData({
-      title: painting.title,
-      description: painting.description,
+      title: {
+        en: painting.title?.en || painting.title || '',
+        ro: painting.title?.ro || painting.title || ''
+      },
+      description: {
+        en: painting.description?.en || painting.description || '',
+        ro: painting.description?.ro || painting.description || ''
+      },
       price: painting.price.toString(),
-      technique: painting.technique,
+      technique: {
+        en: painting.technique?.en || painting.technique || '',
+        ro: painting.technique?.ro || painting.technique || ''
+      },
       width: painting.dimensions.width.toString(),
       height: painting.dimensions.height.toString(),
       stock: painting.stock.toString(),
@@ -141,10 +163,19 @@ export default function AdminPaintingsPage() {
 
   const resetForm = () => {
     setFormData({
-      title: '',
-      description: '',
+      title: {
+        en: '',
+        ro: ''
+      },
+      description: {
+        en: '',
+        ro: ''
+      },
       price: '',
-      technique: '',
+      technique: {
+        en: '',
+        ro: ''
+      },
       width: '',
       height: '',
       stock: '1',
@@ -196,28 +227,77 @@ export default function AdminPaintingsPage() {
               {editingId ? 'Editează Tablou' : 'Tablou Nou'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Titlu *</label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
-                  />
+              {/* Titlu bilingv */}
+              <div className="col-span-full">
+                <label className="block text-sm font-medium mb-3">Titlu *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                    <input
+                      type="text"
+                      value={formData.title.en}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        title: { ...formData.title, en: e.target.value }
+                      })}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg"
+                      placeholder="Original painting title"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">🇷🇴 Română</label>
+                    <input
+                      type="text"
+                      value={formData.title.ro}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        title: { ...formData.title, ro: e.target.value }
+                      })}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg"
+                      placeholder="Titlul tabloului original"
+                    />
+                  </div>
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">Tehnică *</label>
-                  <input
-                    type="text"
-                    value={formData.technique}
-                    onChange={(e) => setFormData({ ...formData, technique: e.target.value })}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
-                  />
+              {/* Tehnică bilingvă */}
+              <div className="col-span-full">
+                <label className="block text-sm font-medium mb-3">Tehnică *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                    <input
+                      type="text"
+                      value={formData.technique.en}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        technique: { ...formData.technique, en: e.target.value }
+                      })}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg"
+                      placeholder="Oil on canvas, Impasto technique"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">🇷🇴 Română</label>
+                    <input
+                      type="text"
+                      value={formData.technique.ro}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        technique: { ...formData.technique, ro: e.target.value }
+                      })}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg"
+                      placeholder="Ulei pe pânză, tehnica impasto"
+                    />
+                  </div>
                 </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Preț (EUR) *</label>
@@ -265,15 +345,39 @@ export default function AdminPaintingsPage() {
                 </div>
               </div>
 
+              {/* Descriere bilingvă */}
               <div>
-                <label className="block text-sm font-medium mb-2">Descriere *</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  required
-                  rows={4}
-                  className="w-full px-4 py-2 border rounded-lg"
-                />
+                <label className="block text-sm font-medium mb-3">Descriere *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                    <textarea
+                      value={formData.description.en}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        description: { ...formData.description, en: e.target.value }
+                      })}
+                      required
+                      rows={4}
+                      className="w-full px-4 py-2 border rounded-lg"
+                      placeholder="Detailed description of the painting..."
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-600 mb-1">🇷🇴 Română</label>
+                    <textarea
+                      value={formData.description.ro}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        description: { ...formData.description, ro: e.target.value }
+                      })}
+                      required
+                      rows={4}
+                      className="w-full px-4 py-2 border rounded-lg"
+                      placeholder="Descrierea detaliată a tabloului..."
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-3">
@@ -366,7 +470,7 @@ export default function AdminPaintingsPage() {
                 <div className="relative h-48">
                   <Image
                     src={painting.images[0].url}
-                    alt={painting.title}
+                    alt={painting.title?.en || painting.title || 'Untitled'}
                     fill
                     className="object-cover"
                   />
@@ -374,14 +478,18 @@ export default function AdminPaintingsPage() {
               )}
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-lg">{painting.title}</h3>
+                  <h3 className="font-semibold text-lg">
+                    {painting.title?.en || painting.title || 'Untitled'}
+                  </h3>
                   {painting.sold && (
                     <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
                       Vândut
                     </span>
                   )}
                 </div>
-                <p className="text-gray-600 text-sm mb-2">{painting.technique}</p>
+                <p className="text-gray-600 text-sm mb-2">
+                  {painting.technique?.en || painting.technique || 'No technique'}
+                </p>
                 <p className="font-bold text-primary mb-4">{formatPrice(painting.price)}</p>
                 <div className="flex gap-2">
                   <button

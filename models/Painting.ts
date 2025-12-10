@@ -2,9 +2,16 @@ import mongoose from 'mongoose';
 
 const PaintingSchema = new mongoose.Schema({
   title: {
-    type: String,
-    required: true,
-    trim: true,
+    en: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    ro: {
+      type: String,
+      required: true,
+      trim: true,
+    }
   },
   slug: {
     type: String,
@@ -12,8 +19,14 @@ const PaintingSchema = new mongoose.Schema({
     unique: true,
   },
   description: {
-    type: String,
-    required: true,
+    en: {
+      type: String,
+      required: true,
+    },
+    ro: {
+      type: String,
+      required: true,
+    }
   },
   price: {
     type: Number,
@@ -28,8 +41,14 @@ const PaintingSchema = new mongoose.Schema({
     },
   },
   technique: {
-    type: String,
-    required: true,
+    en: {
+      type: String,
+      required: true,
+    },
+    ro: {
+      type: String,
+      required: true,
+    }
   },
   images: [{
     url: String,

@@ -29,7 +29,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     const data = await req.json();
     
     if (data.title) {
-      data.slug = generateSlug(data.title);
+      // Generează slug din titlul în engleză sau din string-ul simplu
+      const titleForSlug = typeof data.title === 'object' ? data.title.en : data.title;
+      data.slug = generateSlug(titleForSlug);
     }
     
     const painting = await Painting.findByIdAndUpdate(params.id, data, { new: true });

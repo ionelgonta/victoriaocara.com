@@ -37,9 +37,16 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const data = await req.json();
     
-    // Validare date
-    if (!data.title || !data.description || !data.price || !data.technique) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    // Validare date pentru câmpuri bilingve
+    const titleValid = (data.title && typeof data.title === 'object' && data.title.en && data.title.ro) || 
+                      (typeof data.title === 'string' && data.title.trim());
+    const descriptionValid = (data.description && typeof data.description === 'object' && data.description.en && data.description.ro) || 
+                            (typeof data.description === 'string' && data.description.trim());
+    const techniqueValid = (data.technique && typeof data.technique === 'object' && data.technique.en && data.technique.ro) || 
+                          (typeof data.technique === 'string' && data.technique.trim());
+    
+    if (!titleValid || !descriptionValid || !data.price || !techniqueValid) {
+      return NextResponse.json({ error: 'Missing required fields or incomplete bilingual data' }, { status: 400 });
     }
 
     // Validare dimensiuni
@@ -47,7 +54,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing dimensions' }, { status: 400 });
     }
 
-    const slug = generateSlug(data.title);
+    // Generează slug din titlul în engleză sau din string-ul simplu
+    const titleForSlug = typeof data.title === 'object' ? data.title.en : data.title;
+    const slug = generateSlug(titleForSlug);
     
     // Verifică dacă slug-ul există deja
     const existingPainting = await Painting.findOne({ slug });

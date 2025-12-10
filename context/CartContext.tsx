@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 interface CartItem {
   _id: string;
-  title: string;
+  title: string | { en: string; ro: string };
   price: number;
   images: { url: string; alt: string }[];
   quantity: number;

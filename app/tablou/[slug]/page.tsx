@@ -12,10 +12,35 @@ import axios from 'axios';
 export default function PaintingPage() {
   const params = useParams();
   const { addToCart } = useCart();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [painting, setPainting] = useState<any>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  // Funcții helper pentru a obține textul în limba corectă
+  const getTitle = () => {
+    if (!painting) return '';
+    if (typeof painting.title === 'object') {
+      return painting.title[language] || painting.title.en;
+    }
+    return painting.title;
+  };
+  
+  const getTechnique = () => {
+    if (!painting) return '';
+    if (typeof painting.technique === 'object') {
+      return painting.technique[language] || painting.technique.en;
+    }
+    return painting.technique;
+  };
+
+  const getDescription = () => {
+    if (!painting) return '';
+    if (typeof painting.description === 'object') {
+      return painting.description[language] || painting.description.en;
+    }
+    return painting.description;
+  };
 
   useEffect(() => {
     const fetchPainting = async () => {
@@ -62,7 +87,7 @@ export default function PaintingPage() {
             {painting.images && painting.images[selectedImage] && (
               <Image
                 src={painting.images[selectedImage].url}
-                alt={painting.images[selectedImage].alt || painting.title}
+                alt={painting.images[selectedImage].alt || getTitle()}
                 fill
                 className="object-cover"
                 priority
@@ -82,7 +107,7 @@ export default function PaintingPage() {
                 >
                   <Image
                     src={img.url}
-                    alt={img.alt || `${painting.title} ${idx + 1}`}
+                    alt={img.alt || `${getTitle()} ${idx + 1}`}
                     fill
                     className="object-cover"
                   />
@@ -93,7 +118,7 @@ export default function PaintingPage() {
         </div>
 
         <div>
-          <h1 className="text-4xl font-serif font-bold mb-4">{painting.title}</h1>
+          <h1 className="text-4xl font-serif font-bold mb-4">{getTitle()}</h1>
           
           <div className="mb-6">
             <p className="text-3xl font-bold text-primary">{formatPrice(painting.price)}</p>
@@ -105,7 +130,7 @@ export default function PaintingPage() {
               {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
             </div>
             <div>
-              <span className="font-semibold">{t('painting.technique')}:</span> {painting.technique}
+              <span className="font-semibold">{t('painting.technique')}:</span> {getTechnique()}
             </div>
             {painting.sold ? (
               <div className="text-red-600">
@@ -124,7 +149,7 @@ export default function PaintingPage() {
 
           <div className="mb-8">
             <h2 className="text-xl font-semibold mb-2">{t('painting.description')}</h2>
-            <p className="text-gray-700 leading-relaxed">{painting.description}</p>
+            <p className="text-gray-700 leading-relaxed">{getDescription()}</p>
           </div>
 
           <button

@@ -9,7 +9,15 @@ import { formatPrice } from '@/lib/utils';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal } = useCart();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  // Helper function to get title in current language
+  const getTitle = (title: string | { en: string; ro: string }) => {
+    if (typeof title === 'object') {
+      return title[language] || title.en;
+    }
+    return title;
+  };
 
   if (cart.length === 0) {
     return (
@@ -41,7 +49,7 @@ export default function CartPage() {
                 {item.images && item.images[0] && (
                   <Image
                     src={item.images[0].url}
-                    alt={item.title}
+                    alt={getTitle(item.title)}
                     fill
                     className="object-cover rounded"
                   />
@@ -49,7 +57,7 @@ export default function CartPage() {
               </div>
 
               <div className="flex-grow">
-                <h3 className="font-semibold text-lg">{item.title}</h3>
+                <h3 className="font-semibold text-lg">{getTitle(item.title)}</h3>
                 <p className="text-gray-600">{formatPrice(item.price)}</p>
 
                 <div className="flex items-center gap-2 mt-2">
