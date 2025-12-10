@@ -27,14 +27,32 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <Image 
-              src="/logo.svg" 
-              alt="Victoria Ocara - Original Paintings" 
-              width={280} 
-              height={70}
-              priority
-              className="h-14 w-auto"
-            />
+            <div className="flex items-center">
+              {/* Paint palette logo - recreating your original design */}
+              <div className="relative w-16 h-12 mr-3">
+                {/* Palette shape */}
+                <div className="absolute inset-0 bg-gray-800 rounded-full transform -rotate-12" 
+                     style={{
+                       clipPath: 'ellipse(70% 45% at 40% 50%)',
+                       width: '48px',
+                       height: '32px'
+                     }}>
+                  {/* Paint spots */}
+                  <div className="absolute top-2 left-2 w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className="absolute top-1 left-6 w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <div className="absolute top-3 left-8 w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                  <div className="absolute top-1.5 left-10 w-1 h-1 bg-blue-300 rounded-full"></div>
+                </div>
+                {/* Brush */}
+                <div className="absolute top-0 right-0 w-1 h-8 bg-gray-800 transform rotate-45 origin-bottom"></div>
+                <div className="absolute top-1 right-0.5 w-0.5 h-2 bg-gray-600 transform rotate-45"></div>
+              </div>
+              
+              {/* Text logo */}
+              <div className="text-gray-800 font-serif">
+                <div className="text-base font-bold leading-tight tracking-wide">VICTORIA OCARĂ</div>
+              </div>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
