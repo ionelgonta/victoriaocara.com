@@ -37,6 +37,7 @@ export default function AdminPaintingsPage() {
     stock: '1',
     featured: false,
     sold: false,
+    negotiable: false,
     images: [{ url: '', alt: '' }],
   });
 
@@ -168,6 +169,7 @@ export default function AdminPaintingsPage() {
       stock: painting.stock.toString(),
       featured: painting.featured,
       sold: painting.sold || false,
+      negotiable: painting.negotiable || false,
       images: painting.images.length > 0 ? painting.images : [{ url: '', alt: '' }],
     });
     setShowForm(true);
@@ -193,6 +195,7 @@ export default function AdminPaintingsPage() {
       stock: '1',
       featured: false,
       sold: false,
+      negotiable: false,
       images: [{ url: '', alt: '' }],
     });
   };
@@ -523,6 +526,16 @@ export default function AdminPaintingsPage() {
                     className="w-4 h-4"
                   />
                   <span className="text-sm font-medium">Vândut</span>
+                </label>
+                
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={formData.negotiable}
+                    onChange={(e) => setFormData({ ...formData, negotiable: e.target.checked })}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-sm font-medium">Preț negociabil (permite oferte de preț)</span>
                 </label>
               </div>
 

@@ -57,6 +57,26 @@ const translations = {
     'painting.notFound.message': 'Sorry, this painting does not exist.',
     'painting.loading': 'Loading...',
     
+    // Price Offer
+    'offer.title': 'Make an Offer',
+    'offer.currentPrice': 'Current Price',
+    'offer.name': 'Full Name',
+    'offer.namePlaceholder': 'Your full name',
+    'offer.email': 'Email Address',
+    'offer.emailPlaceholder': 'your@email.com',
+    'offer.phone': 'Phone Number',
+    'offer.phonePlaceholder': '+40 123 456 789',
+    'offer.yourPrice': 'Your Offer',
+    'offer.suggestions': 'Quick suggestions',
+    'offer.message': 'Message (Optional)',
+    'offer.messagePlaceholder': 'Tell us why you love this painting...',
+    'offer.send': 'Send Offer',
+    'offer.sending': 'Sending...',
+    'offer.success': 'Your offer has been sent successfully! We will contact you soon.',
+    'offer.error': 'Failed to send offer. Please try again.',
+    'offer.button': 'Make an Offer',
+    'offer.negotiable': 'Price Negotiable',
+
     // About Page
     'about.title': 'About Me',
     'about.loading': 'Loading...',
@@ -219,6 +239,26 @@ const translations = {
     'painting.notFound.message': 'Ne pare rău, acest tablou nu există.',
     'painting.loading': 'Se încarcă...',
     
+    // Price Offer
+    'offer.title': 'Fă o Ofertă',
+    'offer.currentPrice': 'Preț Actual',
+    'offer.name': 'Nume Complet',
+    'offer.namePlaceholder': 'Numele tău complet',
+    'offer.email': 'Adresă Email',
+    'offer.emailPlaceholder': 'email@tau.com',
+    'offer.phone': 'Număr Telefon',
+    'offer.phonePlaceholder': '+40 123 456 789',
+    'offer.yourPrice': 'Oferta Ta',
+    'offer.suggestions': 'Sugestii rapide',
+    'offer.message': 'Mesaj (Opțional)',
+    'offer.messagePlaceholder': 'Spune-ne de ce îți place acest tablou...',
+    'offer.send': 'Trimite Oferta',
+    'offer.sending': 'Se trimite...',
+    'offer.success': 'Oferta ta a fost trimisă cu succes! Te vom contacta în curând.',
+    'offer.error': 'Nu s-a putut trimite oferta. Te rugăm să încerci din nou.',
+    'offer.button': 'Fă o Ofertă',
+    'offer.negotiable': 'Preț Negociabil',
+
     // About Page
     'about.title': 'Despre Mine',
     'about.loading': 'Se încarcă...',

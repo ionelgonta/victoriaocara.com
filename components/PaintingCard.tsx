@@ -23,6 +23,7 @@ interface PaintingCardProps {
     } | string;
     dimensions: { width: number; height: number; unit: string };
     sold?: boolean;
+    negotiable?: boolean;
   };
 }
 
@@ -80,19 +81,28 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
           </p>
           <p className="text-sm text-gray-500">{getTechnique()}</p>
           
-          <div className="flex items-center justify-between mt-3">
-            <p className={`text-xl ${
-              painting.sold ? 'text-gray-400' : 'text-primary'
-            }`}>
-              {formatPrice(painting.price)}
-            </p>
-            
-            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-              painting.sold 
-                ? 'bg-red-100 text-red-700' 
-                : 'bg-green-100 text-green-700'
-            }`}>
-              {painting.sold ? t('painting.sold') : t('painting.available')}
+          <div className="mt-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className={`text-xl ${
+                  painting.sold ? 'text-gray-400' : 'text-primary'
+                }`}>
+                  {formatPrice(painting.price)}
+                </p>
+                {painting.negotiable && !painting.sold && (
+                  <p className="text-xs text-blue-600 font-medium">
+                    💰 {t('offer.negotiable')}
+                  </p>
+                )}
+              </div>
+              
+              <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                painting.sold 
+                  ? 'bg-red-100 text-red-700' 
+                  : 'bg-green-100 text-green-700'
+              }`}>
+                {painting.sold ? t('painting.sold') : t('painting.available')}
+              </div>
             </div>
           </div>
         </div>

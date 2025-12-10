@@ -8,6 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatPrice } from '@/lib/utils';
 import { getTechniqueText } from '@/lib/techniques';
+import PriceOfferForm from '@/components/PriceOfferForm';
 import axios from 'axios';
 
 export default function PaintingPage() {
@@ -17,6 +18,7 @@ export default function PaintingPage() {
   const [painting, setPainting] = useState<any>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showOfferForm, setShowOfferForm] = useState(false);
 
   // Funcții helper pentru a obține textul în limba corectă
   const getTitle = () => {
@@ -150,15 +152,40 @@ export default function PaintingPage() {
             <p className="text-gray-700 leading-relaxed">{getDescription()}</p>
           </div>
 
-          <button
-            onClick={() => addToCart(painting)}
-            disabled={painting.stock === 0 || painting.sold}
-            className="w-full bg-primary text-white py-4 rounded-lg hover:bg-accent transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed text-lg font-semibold"
-          >
-            {painting.sold ? t('painting.sold.status') : painting.stock > 0 ? t('painting.addToCart') : t('painting.outOfStock')}
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={() => addToCart(painting)}
+              disabled={painting.stock === 0 || painting.sold}
+              className="w-full bg-primary text-white py-4 rounded-lg hover:bg-accent transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed text-lg font-semibold"
+            >
+              {painting.sold ? t('painting.sold.status') : painting.stock > 0 ? t('painting.addToCart') : t('painting.outOfStock')}
+            </button>
+
+            {painting.negotiable && !painting.sold && (
+              <button
+                onClick={() => setShowOfferForm(true)}
+                className="w-full border-2 border-primary text-primary py-4 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 text-lg font-semibold"
+              >
+                {t('offer.button')}
+              </button>
+            )}
+
+            {painting.negotiable && (
+              <p className="text-center text-sm text-gray-600">
+                💰 {t('offer.negotiable')}
+              </p>
+            )}
+          </div>
         </div>
       </div>
+
+      {painting && (
+        <PriceOfferForm
+          painting={painting}
+          isOpen={showOfferForm}
+          onClose={() => setShowOfferForm(false)}
+        />
+      )}
     </div>
   );
 }

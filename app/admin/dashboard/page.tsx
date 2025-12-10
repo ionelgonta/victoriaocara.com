@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
-import { FiPackage, FiImage, FiFileText, FiLogOut } from 'react-icons/fi';
+import { FiPackage, FiImage, FiFileText, FiLogOut, FiDollarSign } from 'react-icons/fi';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -103,6 +103,15 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
+            href="/admin/offers"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <FiDollarSign className="w-16 h-16 mx-auto mb-4 text-green-600" />
+            <h2 className="text-xl font-semibold mb-2">Oferte de Preț</h2>
+            <p className="text-gray-600">Gestionează ofertele clienților</p>
+          </Link>
+
+          <Link
             href="/admin/about"
             className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
           >
@@ -110,7 +119,9 @@ export default function AdminDashboard() {
             <h2 className="text-xl font-semibold mb-2">Pagina "Despre"</h2>
             <p className="text-gray-600">Modifică imaginea și conținutul artistei</p>
           </Link>
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
           <Link
             href="/admin/content"
             className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"

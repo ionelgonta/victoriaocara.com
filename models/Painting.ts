@@ -70,6 +70,10 @@ const PaintingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  negotiable: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });
