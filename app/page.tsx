@@ -4,18 +4,38 @@ import PaintingCard from '@/components/PaintingCard';
 
 async function getFeaturedPaintings() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/paintings?featured=true`, {
+    // Construiește URL-ul dinamic pentru a funcționa și pe Vercel
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                   'http://localhost:3000';
+    
+    console.log('Fetching featured paintings from:', `${baseUrl}/api/paintings?featured=true`);
+    
+    const res = await fetch(`${baseUrl}/api/paintings?featured=true`, {
       cache: 'no-store',
     });
-    if (!res.ok) return [];
-    return res.json();
+    
+    console.log('Featured paintings response status:', res.status);
+    
+    if (!res.ok) {
+      console.log('Featured paintings fetch failed:', res.statusText);
+      return [];
+    }
+    
+    const data = await res.json();
+    console.log('Featured paintings count:', data.length);
+    
+    return data;
   } catch (error) {
+    console.error('Error fetching featured paintings:', error);
     return [];
   }
 }
 
 export default async function Home() {
   const featuredPaintings = await getFeaturedPaintings();
+  
+  console.log('Homepage - Featured paintings:', featuredPaintings.length);
 
   return (
     <div>
@@ -60,7 +80,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {featuredPaintings.length > 0 && (
+      {featuredPaintings.length > 0 ? (
         <section className="container mx-auto px-4 py-20">
           <h2 className="text-4xl font-serif font-bold text-center mb-12">
             Lucrări Selectate
@@ -78,6 +98,21 @@ export default async function Home() {
               Vezi Toate Tablourile
             </Link>
           </div>
+        </section>
+      ) : (
+        <section className="container mx-auto px-4 py-20 text-center">
+          <h2 className="text-4xl font-serif font-bold mb-8">
+            Lucrări Selectate
+          </h2>
+          <p className="text-gray-600 mb-8">
+            Nu există tablouri selectate momentan pentru afișare pe homepage.
+          </p>
+          <Link
+            href="/galerie"
+            className="inline-block bg-primary text-white px-8 py-4 rounded-lg hover:bg-accent transition-colors"
+          >
+            Vezi Toate Tablourile
+          </Link>
         </section>
       )}
 
