@@ -27,14 +27,14 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <Image 
-              src="/logo.svg" 
-              alt="Victoria Ocara - Oil Paint Artist" 
-              width={400} 
-              height={200}
-              priority
-              className="h-16 w-auto"
-            />
+            <div className="text-center">
+              <div className="text-xl font-serif font-bold text-gray-800 tracking-wide">
+                VICTORIA OCARĂ
+              </div>
+              <div className="text-xs text-gray-600 tracking-widest uppercase">
+                Oil Paint Artist
+              </div>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
