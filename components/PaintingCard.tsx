@@ -67,14 +67,22 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
             {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
           </p>
           <p className="text-sm text-gray-500">{painting.technique}</p>
-          <p className={`text-xl font-semibold mt-2 ${
-            painting.sold ? 'text-gray-500 line-through' : 'text-primary'
-          }`}>
-            {formatPrice(painting.price)}
-          </p>
-          {painting.sold && (
-            <p className="text-sm text-red-600 font-medium">Indisponibil</p>
-          )}
+          
+          <div className="flex items-center justify-between mt-3">
+            <p className={`text-xl font-semibold ${
+              painting.sold ? 'text-gray-400' : 'text-primary'
+            }`}>
+              {formatPrice(painting.price)}
+            </p>
+            
+            <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+              painting.sold 
+                ? 'bg-red-100 text-red-700' 
+                : 'bg-green-100 text-green-700'
+            }`}>
+              {painting.sold ? 'Vândut' : 'Disponibil'}
+            </div>
+          </div>
         </div>
       </Link>
     </motion.div>
