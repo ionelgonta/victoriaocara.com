@@ -68,6 +68,7 @@ export default function AdminAboutPage() {
       }
 
       console.log('About content to save:', aboutContent);
+      console.log('Artist photo to save:', aboutContent.artistPhoto);
       console.log('Making API request...');
 
       const response = await axios.post('/api/about-content', aboutContent, {
@@ -79,6 +80,12 @@ export default function AdminAboutPage() {
       
       console.log('API response:', response.data);
       toast.success('Conținutul paginii "Despre" a fost actualizat!');
+      
+      // Reîncarcă conținutul pentru a verifica salvarea
+      setTimeout(() => {
+        loadAboutContent();
+      }, 1000);
+      
     } catch (error: any) {
       console.error('Error saving about content:', error);
       console.error('Error response:', error.response);
@@ -213,6 +220,12 @@ export default function AdminAboutPage() {
 
           {/* Save Button */}
           <div className="mt-8 flex justify-end gap-4">
+            <button
+              onClick={loadAboutContent}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold"
+            >
+              Reîncarcă Conținut
+            </button>
             <button
               onClick={async () => {
                 try {

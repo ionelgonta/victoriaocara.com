@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdmin } from '@/lib/authHelpers';
+import dbConnect from '@/lib/mongodb';
 
 // Model pentru conținutul paginii Despre
 interface AboutContent {
@@ -19,13 +20,30 @@ const defaultContent: AboutContent = {
   specialties: ['Pictura cu Ulei', 'Peisaje Urbane', 'Tehnica Impasto', 'Apusuri Dramatice']
 };
 
-// Variabilă globală pentru a stoca conținutul (temporar)
-let currentContent: AboutContent = { ...defaultContent };
-
 export async function GET() {
   try {
-    console.log('GET about content:', currentContent);
-    return NextResponse.json(currentContent);
+    console.log('GET about content - connecting to database...');
+    await dbConnect();
+    
+    const { MongoClient } = require('mongodb');
+    const client = new MongoClient(process.env.MONGODB_URI);
+    await client.connect();
+    
+    const db = client.db('art-gallery');
+    const collection = db.collection('about-content');
+    
+    const content = await collection.findOne({ type: 'about-page' });
+    await client.close();
+    
+    if (content) {
+      console.log('Found saved content:', content.artistPhoto);
+      // Remove MongoDB specific fields
+      const { _id, type, updatedAt, ...cleanContent } = content;
+      return NextResponse.json(cleanContent);
+    }
+    
+    console.log('No saved content found, returning default');
+    return NextResponse.json(defaultContent);
   } catch (error) {
     console.error('Error reading about content:', error);
     return NextResponse.json(defaultContent);
@@ -47,15 +65,37 @@ export async function POST(req: NextRequest) {
     
     const aboutContent: AboutContent = await req.json();
     console.log('About content received:', aboutContent);
+    console.log('Artist photo to save:', aboutContent.artistPhoto);
     
     // Validare de bază
     if (!aboutContent.title || !aboutContent.artistPhoto) {
       return NextResponse.json({ error: 'Title and artist photo are required' }, { status: 400 });
     }
     
-    // Salvează în variabila globală (temporar pentru testare)
-    currentContent = { ...aboutContent };
-    console.log('Content saved successfully:', currentContent);
+    // Salvează în MongoDB
+    console.log('Connecting to database for save...');
+    await dbConnect();
+    
+    const { MongoClient } = require('mongodb');
+    const client = new MongoClient(process.env.MONGODB_URI);
+    await client.connect();
+    
+    const db = client.db('art-gallery');
+    const collection = db.collection('about-content');
+    
+    // Upsert (update sau insert)
+    const result = await collection.replaceOne(
+      { type: 'about-page' },
+      { 
+        type: 'about-page',
+        ...aboutContent,
+        updatedAt: new Date()
+      },
+      { upsert: true }
+    );
+    
+    console.log('Database save result:', result);
+    await client.close();
     
     return NextResponse.json({ 
       success: true, 
