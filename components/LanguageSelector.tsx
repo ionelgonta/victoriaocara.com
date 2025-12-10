@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import Image from 'next/image';
 
 export default function LanguageSelector() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -23,12 +24,12 @@ export default function LanguageSelector() {
     { 
       code: 'en', 
       name: 'English', 
-      flag: '🇬🇧'
+      flag: '/flags/uk-flag.svg'
     },
     { 
       code: 'ro', 
       name: 'Română', 
-      flag: '🇷🇴'
+      flag: '/flags/ro-flag.svg'
     }
   ];
 
@@ -40,8 +41,14 @@ export default function LanguageSelector() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
       >
-        <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center text-sm">
-          {currentLanguage?.flag}
+        <div className="w-6 h-6 relative">
+          <Image
+            src={currentLanguage?.flag || '/flags/uk-flag.svg'}
+            alt={currentLanguage?.name || 'English'}
+            width={24}
+            height={24}
+            className="rounded-full"
+          />
         </div>
         <span className="text-sm font-medium text-gray-700">
           {currentLanguage?.code.toUpperCase()}
@@ -69,8 +76,14 @@ export default function LanguageSelector() {
                 language === lang.code ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
               }`}
             >
-              <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center text-sm">
-                {lang.flag}
+              <div className="w-6 h-6 relative">
+                <Image
+                  src={lang.flag}
+                  alt={lang.name}
+                  width={24}
+                  height={24}
+                  className="rounded-full"
+                />
               </div>
               <span className="text-sm font-medium">{lang.name}</span>
             </button>

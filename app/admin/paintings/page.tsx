@@ -8,12 +8,16 @@ import { FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 import ImageUpload from '@/components/ImageUpload';
+import { defaultTechniques, Technique } from '@/lib/techniques';
 
 export default function AdminPaintingsPage() {
   const router = useRouter();
   const [paintings, setPaintings] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [customTechniques, setCustomTechniques] = useState<Technique[]>([]);
+  const [showCustomTechniqueForm, setShowCustomTechniqueForm] = useState(false);
+  const [newTechnique, setNewTechnique] = useState({ en: '', ro: '' });
   const [formData, setFormData] = useState({
     title: {
       en: '',
@@ -192,6 +196,30 @@ export default function AdminPaintingsPage() {
     });
   };
 
+  const addCustomTechnique = () => {
+    if (newTechnique.en.trim() && newTechnique.ro.trim()) {
+      const technique: Technique = {
+        id: `custom-${Date.now()}`,
+        en: newTechnique.en.trim(),
+        ro: newTechnique.ro.trim()
+      };
+      setCustomTechniques([...customTechniques, technique]);
+      setNewTechnique({ en: '', ro: '' });
+      setShowCustomTechniqueForm(false);
+      
+      // Setează automat noua tehnică în formular
+      setFormData({
+        ...formData,
+        technique: {
+          en: technique.en,
+          ro: technique.ro
+        }
+      });
+    }
+  };
+
+  const allTechniques = [...defaultTechniques, ...customTechniques];
+
   const updateImage = (index: number, field: 'url' | 'alt', value: string, altValue?: string) => {
     const newImages = [...formData.images];
     newImages[index][field] = value;
@@ -262,37 +290,120 @@ export default function AdminPaintingsPage() {
                 </div>
               </div>
 
-              {/* Tehnică bilingvă */}
+              {/* Tehnică cu dropdown */}
               <div className="col-span-full">
-                <label className="block text-sm font-medium mb-3">Tehnică *</label>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="block text-sm font-medium">Tehnică *</label>
+                  <button
+                    type="button"
+                    onClick={() => setShowCustomTechniqueForm(!showCustomTechniqueForm)}
+                    className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    + Adaugă tehnică nouă
+                  </button>
+                </div>
+
+                {showCustomTechniqueForm && (
+                  <div className="mb-4 p-4 bg-gray-50 rounded-lg border">
+                    <h4 className="font-medium mb-3">Adaugă tehnică personalizată</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                        <input
+                          type="text"
+                          value={newTechnique.en}
+                          onChange={(e) => setNewTechnique({ ...newTechnique, en: e.target.value })}
+                          className="w-full px-3 py-2 border rounded"
+                          placeholder="Oil on canvas"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">🇷🇴 Română</label>
+                        <input
+                          type="text"
+                          value={newTechnique.ro}
+                          onChange={(e) => setNewTechnique({ ...newTechnique, ro: e.target.value })}
+                          className="w-full px-3 py-2 border rounded"
+                          placeholder="Ulei pe pânză"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={addCustomTechnique}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                      >
+                        Adaugă
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowCustomTechniqueForm(false);
+                          setNewTechnique({ en: '', ro: '' });
+                        }}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 text-sm"
+                      >
+                        Anulează
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
-                    <input
-                      type="text"
+                    <select
                       value={formData.technique.en}
-                      onChange={(e) => setFormData({ 
-                        ...formData, 
-                        technique: { ...formData.technique, en: e.target.value }
-                      })}
+                      onChange={(e) => {
+                        const selectedTechnique = allTechniques.find(t => t.en === e.target.value);
+                        if (selectedTechnique) {
+                          setFormData({
+                            ...formData,
+                            technique: {
+                              en: selectedTechnique.en,
+                              ro: selectedTechnique.ro
+                            }
+                          });
+                        }
+                      }}
                       required
                       className="w-full px-4 py-2 border rounded-lg"
-                      placeholder="Oil on canvas, Impasto technique"
-                    />
+                    >
+                      <option value="">Select technique...</option>
+                      {allTechniques.map((tech) => (
+                        <option key={tech.id} value={tech.en}>
+                          {tech.en}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="block text-xs text-gray-600 mb-1">🇷🇴 Română</label>
-                    <input
-                      type="text"
+                    <select
                       value={formData.technique.ro}
-                      onChange={(e) => setFormData({ 
-                        ...formData, 
-                        technique: { ...formData.technique, ro: e.target.value }
-                      })}
+                      onChange={(e) => {
+                        const selectedTechnique = allTechniques.find(t => t.ro === e.target.value);
+                        if (selectedTechnique) {
+                          setFormData({
+                            ...formData,
+                            technique: {
+                              en: selectedTechnique.en,
+                              ro: selectedTechnique.ro
+                            }
+                          });
+                        }
+                      }}
                       required
                       className="w-full px-4 py-2 border rounded-lg"
-                      placeholder="Ulei pe pânză, tehnica impasto"
-                    />
+                    >
+                      <option value="">Selectează tehnica...</option>
+                      {allTechniques.map((tech) => (
+                        <option key={tech.id} value={tech.ro}>
+                          {tech.ro}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>

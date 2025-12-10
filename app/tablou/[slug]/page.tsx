@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatPrice } from '@/lib/utils';
+import { getTechniqueText } from '@/lib/techniques';
 import axios from 'axios';
 
 export default function PaintingPage() {
@@ -28,10 +29,7 @@ export default function PaintingPage() {
   
   const getTechnique = () => {
     if (!painting) return '';
-    if (typeof painting.technique === 'object') {
-      return painting.technique[language] || painting.technique.en;
-    }
-    return painting.technique;
+    return getTechniqueText(painting.technique, language);
   };
 
   const getDescription = () => {

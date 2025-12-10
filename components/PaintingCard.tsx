@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatPrice } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
+import { getTechniqueText } from '@/lib/techniques';
 
 interface PaintingCardProps {
   painting: {
@@ -37,10 +38,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
   };
   
   const getTechnique = () => {
-    if (typeof painting.technique === 'object') {
-      return painting.technique[language] || painting.technique.en;
-    }
-    return painting.technique;
+    return getTechniqueText(painting.technique, language);
   };
   return (
     <motion.div
