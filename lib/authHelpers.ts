@@ -1,13 +1,30 @@
 export const isAdmin = (req: any) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return false;
+  const authHeader = req.headers.get('authorization');
+  console.log('Auth header:', authHeader);
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log('No valid auth header');
+    return false;
+  }
+  
+  const token = authHeader.split(' ')[1];
+  if (!token) {
+    console.log('No token found');
+    return false;
+  }
   
   try {
     const jwt = require('jsonwebtoken');
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    return decoded && decoded.role === 'admin';
+    console.log('Decoded token:', decoded);
+    
+    const isValidAdmin = decoded && decoded.role === 'admin';
+    console.log('Is valid admin:', isValidAdmin);
+    
+    return isValidAdmin;
   } catch (error) {
-    return null;
+    console.log('Token verification error:', error);
+    return false;
   }
 };
 

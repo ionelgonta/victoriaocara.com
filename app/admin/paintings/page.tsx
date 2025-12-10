@@ -46,6 +46,7 @@ export default function AdminPaintingsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('adminToken');
+    console.log('Admin token:', token ? 'exists' : 'missing');
 
     // Validare frontend
     if (!formData.title.trim()) {

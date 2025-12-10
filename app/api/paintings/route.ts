@@ -22,8 +22,16 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!isAdmin(req)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    console.log('POST /api/paintings called');
+    const adminCheck = isAdmin(req);
+    console.log('Admin check result:', adminCheck);
+    
+    if (!adminCheck) {
+      console.log('Authorization failed');
+      return NextResponse.json({ 
+        error: 'Unauthorized',
+        details: 'Admin access required'
+      }, { status: 401 });
     }
 
     await dbConnect();
