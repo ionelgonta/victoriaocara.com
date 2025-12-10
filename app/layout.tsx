@@ -4,17 +4,18 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/context/CartContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
 
 export const metadata: Metadata = {
-  title: 'Victoria Ocara - Tablouri Originale',
-  description: 'Descoperă colecția de tablouri originale create cu pasiune și dedicare de Victoria Ocara.',
+  title: 'Victoria Ocara - Original Paintings',
+  description: 'Discover the collection of original paintings created with passion and dedication by Victoria Ocara.',
   openGraph: {
-    title: 'Victoria Ocara - Tablouri Originale',
-    description: 'Descoperă colecția de tablouri originale create cu pasiune și dedicare de Victoria Ocara.',
+    title: 'Victoria Ocara - Original Paintings',
+    description: 'Discover the collection of original paintings created with passion and dedication by Victoria Ocara.',
     type: 'website',
   },
 };
@@ -25,16 +26,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ro">
+    <html lang="en">
       <body className={`${inter.variable} ${playfair.variable} font-sans`}>
-        <CartProvider>
-          <Header />
-          <main className="min-h-screen pt-20">
-            {children}
-          </main>
-          <Footer />
-          <Toaster position="bottom-right" />
-        </CartProvider>
+        <LanguageProvider>
+          <CartProvider>
+            <Header />
+            <main className="min-h-screen pt-20">
+              {children}
+            </main>
+            <Footer />
+            <Toaster position="bottom-right" />
+          </CartProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

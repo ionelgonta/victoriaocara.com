@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatPrice } from '@/lib/utils';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface PaintingCardProps {
   painting: {
@@ -19,6 +20,7 @@ interface PaintingCardProps {
 }
 
 export default function PaintingCard({ painting }: PaintingCardProps) {
+  const { t } = useLanguage();
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -71,7 +73,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
                 ? 'bg-red-100 text-red-700' 
                 : 'bg-green-100 text-green-700'
             }`}>
-              {painting.sold ? 'Vândut' : 'Disponibil'}
+              {painting.sold ? t('painting.sold') : t('painting.available')}
             </div>
           </div>
         </div>

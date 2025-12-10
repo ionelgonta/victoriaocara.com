@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import PaintingCard from '@/components/PaintingCard';
+import { useLanguage } from '@/context/LanguageContext';
 import axios from 'axios';
 
 export default function GaleriePage() {
+  const { t } = useLanguage();
   const [paintings, setPaintings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -34,9 +36,9 @@ export default function GaleriePage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-5xl font-serif font-bold text-center mb-4">Galerie</h1>
+      <h1 className="text-5xl font-serif font-bold text-center mb-4">{t('gallery.title')}</h1>
       <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-        Explorează colecția noastră completă de tablouri originale
+        {t('gallery.subtitle')}
       </p>
 
       {/* Filter Controls */}
@@ -49,7 +51,7 @@ export default function GaleriePage() {
               onChange={(e) => setShowSold(e.target.checked)}
               className="w-4 h-4"
             />
-            <span className="text-sm font-medium">Afișează tablourile vândute</span>
+            <span className="text-sm font-medium">{t('gallery.showSold')}</span>
           </label>
         </div>
       </div>
@@ -59,7 +61,7 @@ export default function GaleriePage() {
       {loading ? (
         <div className="text-center py-20">
           <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600">Se încarcă tablourile...</p>
+          <p className="text-xl text-gray-600">{t('gallery.loading')}</p>
         </div>
       ) : error ? (
         <div className="text-center py-20">
@@ -68,16 +70,16 @@ export default function GaleriePage() {
             onClick={loadPaintings}
             className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
           >
-            Încearcă din nou
+            {t('gallery.tryAgain')}
           </button>
         </div>
       ) : paintings.length === 0 ? (
         <div className="text-center py-20">
           <p className="text-xl text-gray-600 mb-4">
-            Nu există tablouri disponibile momentan.
+            {t('gallery.noPaintings')}
           </p>
           <p className="text-gray-500">
-            Adaugă tablouri din panoul admin pentru a le vedea aici.
+            {t('gallery.addFromAdmin')}
           </p>
         </div>
       ) : (

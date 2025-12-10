@@ -5,17 +5,20 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { FiShoppingCart, FiMenu, FiX } from 'react-icons/fi';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import LanguageSelector from './LanguageSelector';
 
 export default function Header() {
   const { cartCount } = useCart();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: '/', label: 'Acasă' },
-    { href: '/galerie', label: 'Galerie' },
-    { href: '/despre', label: 'Despre' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t('nav.home') },
+    { href: '/galerie', label: t('nav.gallery') },
+    { href: '/despre', label: t('nav.about') },
+    { href: '/contact', label: t('nav.contact') },
   ];
 
   return (
@@ -51,6 +54,7 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            <LanguageSelector />
           </div>
 
           <button
@@ -84,8 +88,11 @@ export default function Header() {
                 className="block py-2 text-gray-700 hover:text-primary transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Coș ({cartCount})
+                {t('nav.cart')} ({cartCount})
               </Link>
+              <div className="py-2">
+                <LanguageSelector />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

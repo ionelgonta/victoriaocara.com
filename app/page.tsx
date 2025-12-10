@@ -1,9 +1,13 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import AboutSection from '@/components/AboutSection';
 import FeaturedPaintings from '@/components/FeaturedPaintings';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function Home() {
+  const { t } = useLanguage();
 
   return (
     <div>
@@ -26,23 +30,23 @@ export default function Home() {
         {/* Content */}
         <div className="relative z-10 text-center px-4 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 drop-shadow-2xl leading-tight">
-            Artă Originală
+            {t('home.hero.title')}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow-lg leading-relaxed">
-            Descoperă colecția de tablouri unice create cu pasiune și dedicare de Victoria Ocara
+            {t('home.hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/galerie"
               className="inline-block bg-white/90 text-primary px-8 py-4 rounded-lg hover:bg-white hover:scale-105 transition-all duration-300 text-lg font-semibold shadow-xl backdrop-blur-sm"
             >
-              Explorează Galeria
+              {t('home.hero.cta')}
             </Link>
             <Link
               href="/contact"
               className="inline-block border-2 border-white/80 text-white px-8 py-4 rounded-lg hover:bg-white/10 hover:scale-105 transition-all duration-300 text-lg font-semibold backdrop-blur-sm"
             >
-              Contact Artist
+              {t('home.hero.contact')}
             </Link>
           </div>
         </div>
@@ -56,21 +60,21 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">Artă Originală</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">Original Art</h3>
               <p className="text-gray-600">
-                Fiecare tablou este o lucrare unică, creată manual cu atenție la detalii
+                Each painting is a unique work, created by hand with attention to detail
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">Livrare Sigură</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">Safe Delivery</h3>
               <p className="text-gray-600">
-                Ambalăm și expediem fiecare tablou cu grijă maximă pentru siguranța sa
+                We pack and ship each painting with maximum care for its safety
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-serif font-bold mb-4">Plată Securizată</h3>
+              <h3 className="text-2xl font-serif font-bold mb-4">Secure Payment</h3>
               <p className="text-gray-600">
-                Procesăm plățile prin Stripe pentru siguranța și confidențialitatea ta
+                We process payments through Stripe for your safety and privacy
               </p>
             </div>
           </div>
