@@ -27,31 +27,39 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <div className="flex items-center">
-              {/* Paint palette logo - recreating your original design */}
-              <div className="relative w-16 h-12 mr-3">
-                {/* Palette shape */}
-                <div className="absolute inset-0 bg-gray-800 rounded-full transform -rotate-12" 
-                     style={{
-                       clipPath: 'ellipse(70% 45% at 40% 50%)',
-                       width: '48px',
-                       height: '32px'
-                     }}>
-                  {/* Paint spots */}
-                  <div className="absolute top-2 left-2 w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <div className="absolute top-1 left-6 w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                  <div className="absolute top-3 left-8 w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                  <div className="absolute top-1.5 left-10 w-1 h-1 bg-blue-300 rounded-full"></div>
-                </div>
-                {/* Brush */}
-                <div className="absolute top-0 right-0 w-1 h-8 bg-gray-800 transform rotate-45 origin-bottom"></div>
-                <div className="absolute top-1 right-0.5 w-0.5 h-2 bg-gray-600 transform rotate-45"></div>
-              </div>
-              
-              {/* Text logo */}
-              <div className="text-gray-800 font-serif">
-                <div className="text-base font-bold leading-tight tracking-wide">VICTORIA OCARĂ</div>
-              </div>
+            <div className="h-12 w-auto">
+              <svg width="200" height="48" viewBox="0 0 500 120" className="h-full w-auto">
+                {/* Paint palette */}
+                <g transform="translate(50, 10)">
+                  {/* Palette outline */}
+                  <path d="M20 25C15 25 10 30 10 35C10 40 8 45 8 50C8 55 10 60 15 65C20 70 25 72 30 72C35 72 40 70 45 65C50 60 55 55 60 50C65 45 70 40 75 35C80 30 75 25 70 25C65 25 60 27 55 30C50 33 45 35 40 35C35 35 30 33 25 30C22 28 21 25 20 25Z" 
+                        fill="white" stroke="#2D3748" strokeWidth="3"/>
+                  
+                  {/* Paint spots - exact colors from your image */}
+                  <circle cx="25" cy="40" r="4" fill="#93C5FD"/>
+                  <circle cx="35" cy="35" r="4" fill="#3B82F6"/>
+                  <circle cx="45" cy="42" r="4" fill="#1E40AF"/>
+                  <circle cx="55" cy="38" r="3" fill="#DBEAFE"/>
+                  
+                  {/* Small paint details */}
+                  <circle cx="30" cy="50" r="1.5" fill="#60A5FA"/>
+                  <circle cx="50" cy="50" r="1" fill="#2563EB"/>
+                  
+                  {/* Paint strokes */}
+                  <path d="M65 50 Q70 45 75 50" stroke="#60A5FA" strokeWidth="2" fill="none" strokeLinecap="round"/>
+                  <path d="M68 55 Q72 52 76 55" stroke="#93C5FD" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+                </g>
+                
+                {/* Brush - exact angle and position from your image */}
+                <g transform="translate(85, 15) rotate(45)">
+                  <rect x="0" y="0" width="3" height="35" fill="#2D3748"/>
+                  <rect x="-1" y="35" width="5" height="8" fill="#4A5568"/>
+                  <path d="M-1 43 L2 50 L5 43 Z" fill="#2D3748"/>
+                </g>
+                
+                {/* Text - VICTORIA OCARĂ */}
+                <text x="150" y="45" fontFamily="serif" fontSize="24" fontWeight="bold" fill="#2D3748">VICTORIA OCARĂ</text>
+              </svg>
             </div>
           </Link>
 
