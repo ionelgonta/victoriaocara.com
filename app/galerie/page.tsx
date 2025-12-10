@@ -1,49 +1,35 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState, useEffect } from 'react';
 import PaintingCard from '@/components/PaintingCard';
+import axios from 'axios';
 
-export const metadata: Metadata = {
-  title: 'Galerie - Victoria Ocara',
-  description: 'Explorează întreaga colecție de tablouri originale de Victoria Ocara.',
-};
+export default function GaleriePage() {
+  const [paintings, setPaintings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-async function getPaintings() {
-  try {
-    // Construiește URL-ul dinamic pentru a funcționa și pe Vercel
-    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-    
-    if (!baseUrl) {
-      if (process.env.VERCEL_URL) {
-        baseUrl = `https://${process.env.VERCEL_URL}`;
-      } else {
-        baseUrl = 'http://localhost:3000';
-      }
+  useEffect(() => {
+    loadPaintings();
+  }, []);
+
+  const loadPaintings = async () => {
+    try {
+      console.log('Loading paintings...');
+      setLoading(true);
+      setError('');
+      
+      const response = await axios.get('/api/paintings');
+      console.log('Paintings loaded:', response.data.length);
+      
+      setPaintings(response.data);
+    } catch (error: any) {
+      console.error('Error loading paintings:', error);
+      setError('Eroare la încărcarea tablourilor');
+    } finally {
+      setLoading(false);
     }
-    
-    console.log('Fetching paintings from:', `${baseUrl}/api/paintings`);
-    
-    const res = await fetch(`${baseUrl}/api/paintings`, {
-      cache: 'no-store',
-    });
-    
-    console.log('Paintings response status:', res.status);
-    
-    if (!res.ok) {
-      console.log('Paintings fetch failed:', res.statusText);
-      return [];
-    }
-    
-    const data = await res.json();
-    console.log('Paintings count:', data.length);
-    
-    return data;
-  } catch (error) {
-    console.error('Error fetching paintings:', error);
-    return [];
-  }
-}
-
-export default async function GaleriePage() {
-  const paintings = await getPaintings();
+  };
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -52,10 +38,41 @@ export default async function GaleriePage() {
         Explorează colecția noastră completă de tablouri originale
       </p>
 
-      {paintings.length === 0 ? (
+      {/* Debug Info */}
+      <div className="mb-8 p-4 bg-gray-100 rounded-lg text-sm">
+        <p><strong>Status:</strong> {loading ? 'Se încarcă...' : 'Încărcat'}</p>
+        <p><strong>Tablouri găsite:</strong> {paintings.length}</p>
+        {error && <p className="text-red-600"><strong>Eroare:</strong> {error}</p>}
+        <button 
+          onClick={loadPaintings}
+          className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Reîncarcă Tablourile
+        </button>
+      </div>
+
+      {loading ? (
         <div className="text-center py-20">
-          <p className="text-xl text-gray-600">
+          <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">Se încarcă tablourile...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center py-20">
+          <p className="text-xl text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={loadPaintings}
+            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
+          >
+            Încearcă din nou
+          </button>
+        </div>
+      ) : paintings.length === 0 ? (
+        <div className="text-center py-20">
+          <p className="text-xl text-gray-600 mb-4">
             Nu există tablouri disponibile momentan.
+          </p>
+          <p className="text-gray-500">
+            Adaugă tablouri din panoul admin pentru a le vedea aici.
           </p>
         </div>
       ) : (

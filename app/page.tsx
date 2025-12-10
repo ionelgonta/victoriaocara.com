@@ -1,48 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import PaintingCard from '@/components/PaintingCard';
 import AboutSection from '@/components/AboutSection';
+import FeaturedPaintings from '@/components/FeaturedPaintings';
 
-async function getFeaturedPaintings() {
-  try {
-    // Construiește URL-ul dinamic pentru a funcționa și pe Vercel
-    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-    
-    if (!baseUrl) {
-      if (process.env.VERCEL_URL) {
-        baseUrl = `https://${process.env.VERCEL_URL}`;
-      } else {
-        baseUrl = 'http://localhost:3000';
-      }
-    }
-    
-    console.log('Fetching featured paintings from:', `${baseUrl}/api/paintings?featured=true`);
-    
-    const res = await fetch(`${baseUrl}/api/paintings?featured=true`, {
-      cache: 'no-store',
-    });
-    
-    console.log('Featured paintings response status:', res.status);
-    
-    if (!res.ok) {
-      console.log('Featured paintings fetch failed:', res.statusText);
-      return [];
-    }
-    
-    const data = await res.json();
-    console.log('Featured paintings count:', data.length);
-    
-    return data;
-  } catch (error) {
-    console.error('Error fetching featured paintings:', error);
-    return [];
-  }
-}
-
-export default async function Home() {
-  const featuredPaintings = await getFeaturedPaintings();
-  
-  console.log('Homepage - Featured paintings:', featuredPaintings.length);
+export default function Home() {
 
   return (
     <div>
@@ -89,41 +50,7 @@ export default async function Home() {
 
       <AboutSection />
 
-      {featuredPaintings.length > 0 ? (
-        <section className="container mx-auto px-4 py-20">
-          <h2 className="text-4xl font-serif font-bold text-center mb-12">
-            Lucrări Selectate
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredPaintings.map((painting: any) => (
-              <PaintingCard key={painting._id} painting={painting} />
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link
-              href="/galerie"
-              className="inline-block border-2 border-primary text-primary px-8 py-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
-            >
-              Vezi Toate Tablourile
-            </Link>
-          </div>
-        </section>
-      ) : (
-        <section className="container mx-auto px-4 py-20 text-center">
-          <h2 className="text-4xl font-serif font-bold mb-8">
-            Lucrări Selectate
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Nu există tablouri selectate momentan pentru afișare pe homepage.
-          </p>
-          <Link
-            href="/galerie"
-            className="inline-block bg-primary text-white px-8 py-4 rounded-lg hover:bg-accent transition-colors"
-          >
-            Vezi Toate Tablourile
-          </Link>
-        </section>
-      )}
+      <FeaturedPaintings />
 
       <section className="bg-secondary py-20">
         <div className="container mx-auto px-4">
