@@ -117,7 +117,16 @@ export default function AdminDashboard() {
           >
             <div className="text-4xl mb-4">🎨</div>
             <h2 className="text-xl font-semibold mb-2">Cereri Tablouri Similare</h2>
-            <p className="text-gray-600">Gestionează cererile pentru tablouri personalizate</p>
+            <p className="text-gray-600">Gestionează cererile pentru tablouri similare</p>
+          </Link>
+
+          <Link
+            href="/admin/custom-requests"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <div className="text-4xl mb-4">🖼️</div>
+            <h2 className="text-xl font-semibold mb-2">Picturi Personalizate</h2>
+            <p className="text-gray-600">Gestionează comenzile de picturi personalizate</p>
           </Link>
 
           <Link

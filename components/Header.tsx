@@ -17,6 +17,7 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: t('nav.home') },
     { href: '/galerie', label: t('nav.gallery') },
+    { href: '/comanda-pictura', label: t('nav.customPainting') },
     { href: '/despre', label: t('nav.about') },
     { href: '/contact', label: t('nav.contact') },
   ];
