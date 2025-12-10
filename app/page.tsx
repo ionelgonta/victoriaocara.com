@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import PaintingCard from '@/components/PaintingCard';
 
 async function getFeaturedPaintings() {
@@ -20,21 +19,44 @@ export default async function Home() {
 
   return (
     <div>
-      <section className="relative h-[80vh] flex items-center justify-center bg-secondary">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/50" />
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-primary mb-6">
+      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/uploads/1765357410380_WhatsApp_Image_2025-12-10_at_10.05.43.jpeg"
+            alt="Background art"
+            fill
+            className="object-cover"
+            priority
+            quality={85}
+          />
+          {/* Overlay pentru contrast mai bun */}
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60" />
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 text-center px-4 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 drop-shadow-2xl leading-tight">
             Artă Originală
           </h1>
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            Descoperă colecția noastră de tablouri unice, create cu pasiune și dedicare
+          <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow-lg leading-relaxed">
+            Descoperă colecția de tablouri unice create cu pasiune și dedicare de Victoria Ocara
           </p>
-          <Link
-            href="/galerie"
-            className="inline-block bg-primary text-white px-8 py-4 rounded-lg hover:bg-accent transition-colors duration-300 text-lg font-semibold"
-          >
-            Explorează Galeria
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/galerie"
+              className="inline-block bg-white/90 text-primary px-8 py-4 rounded-lg hover:bg-white hover:scale-105 transition-all duration-300 text-lg font-semibold shadow-xl backdrop-blur-sm"
+            >
+              Explorează Galeria
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-block border-2 border-white/80 text-white px-8 py-4 rounded-lg hover:bg-white/10 hover:scale-105 transition-all duration-300 text-lg font-semibold backdrop-blur-sm"
+            >
+              Contact Artist
+            </Link>
+          </div>
         </div>
       </section>
 
