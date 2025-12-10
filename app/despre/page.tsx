@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { FiInstagram } from 'react-icons/fi';
 import { SiThreads, SiFacebook } from 'react-icons/si';
 import axios from 'axios';
+import { getCachedAboutContent, setCachedAboutContent } from '@/lib/aboutContentCache';
 
 interface AboutContent {
   artistPhoto: string;
@@ -17,13 +18,8 @@ interface AboutContent {
 }
 
 export default function DesprePage() {
-  const [aboutContent, setAboutContent] = useState<AboutContent>({
-    artistPhoto: '/uploads/victoria-studio-photo.jpg',
-    title: 'Victoria Ocara',
-    subtitle: 'Artistă specializată în pictura cu ulei',
-    description: 'Sunt o artistă pasionată de pictura cu ulei, specializată în peisaje urbane iconice și apusuri dramatice.',
-    specialties: ['Pictura cu Ulei', 'Peisaje Urbane', 'Tehnica Impasto', 'Apusuri Dramatice']
-  });
+  const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadAboutContent();
@@ -31,12 +27,71 @@ export default function DesprePage() {
 
   const loadAboutContent = async () => {
     try {
+      // Verifică cache-ul mai întâi
+      const cached = getCachedAboutContent();
+      if (cached) {
+        setAboutContent(cached);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
       const response = await axios.get('/api/about-content');
       setAboutContent(response.data);
+      setCachedAboutContent(response.data);
     } catch (error) {
       console.error('Error loading about content:', error);
+      // Fallback la conținutul implicit în caz de eroare
+      const fallbackContent = {
+        artistPhoto: '/uploads/victoria-studio-photo.jpg',
+        title: 'Victoria Ocara',
+        subtitle: 'Artistă specializată în pictura cu ulei',
+        description: 'Sunt o artistă pasionată de pictura cu ulei, specializată în peisaje urbane iconice și apusuri dramatice.',
+        specialties: ['Pictura cu Ulei', 'Peisaje Urbane', 'Tehnica Impasto', 'Apusuri Dramatice']
+      };
+      setAboutContent(fallbackContent);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading || !aboutContent) {
+    return (
+      <div className="min-h-screen bg-white">
+        <section className="relative py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="order-2 lg:order-1">
+                <div className="animate-pulse">
+                  <div className="h-16 bg-gray-300 rounded mb-6"></div>
+                  <div className="space-y-4 mb-8">
+                    <div className="h-6 bg-gray-300 rounded"></div>
+                    <div className="h-20 bg-gray-300 rounded"></div>
+                    <div className="flex flex-wrap gap-3">
+                      <div className="h-8 w-32 bg-gray-300 rounded-full"></div>
+                      <div className="h-8 w-28 bg-gray-300 rounded-full"></div>
+                      <div className="h-8 w-24 bg-gray-300 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="order-1 lg:order-2">
+                <div className="relative">
+                  <div className="relative w-full h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl bg-gray-300 animate-pulse">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <div className="text-center py-20">
+          <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600">Se încarcă conținutul...</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-white">
       {/* Despre Victoria Ocara - Artist Page */}
