@@ -55,22 +55,35 @@ export default function AdminAboutPage() {
 
   const handleSave = async () => {
     setLoading(true);
+    console.log('Starting save process...');
+    
     try {
       const token = localStorage.getItem('adminToken');
+      console.log('Token exists:', !!token);
+      
       if (!token) {
         toast.error('Nu ești autentificat ca admin');
         router.push('/admin');
         return;
       }
 
-      await axios.post('/api/about-content', aboutContent, {
+      console.log('About content to save:', aboutContent);
+      console.log('Making API request...');
+
+      const response = await axios.post('/api/about-content', aboutContent, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
+      
+      console.log('API response:', response.data);
       toast.success('Conținutul paginii "Despre" a fost actualizat!');
     } catch (error: any) {
       console.error('Error saving about content:', error);
+      console.error('Error response:', error.response);
+      console.error('Error status:', error.response?.status);
+      console.error('Error data:', error.response?.data);
       
       let errorMessage = 'Eroare la salvarea conținutului';
       if (error.response?.status === 401) {
@@ -78,11 +91,16 @@ export default function AdminAboutPage() {
         router.push('/admin');
       } else if (error.response?.data?.error) {
         errorMessage = error.response.data.error;
+      } else if (error.response?.data?.details) {
+        errorMessage = error.response.data.details;
+      } else if (error.message) {
+        errorMessage = error.message;
       }
       
       toast.error(errorMessage);
     } finally {
       setLoading(false);
+      console.log('Save process completed');
     }
   };
 
@@ -194,7 +212,20 @@ export default function AdminAboutPage() {
           </div>
 
           {/* Save Button */}
-          <div className="mt-8 flex justify-end">
+          <div className="mt-8 flex justify-end gap-4">
+            <button
+              onClick={async () => {
+                try {
+                  const response = await axios.get('/api/test-about');
+                  toast.success('API Test: ' + response.data.message);
+                } catch (error) {
+                  toast.error('API Test failed');
+                }
+              }}
+              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 font-semibold"
+            >
+              Test API
+            </button>
             <button
               onClick={handleSave}
               disabled={loading}
