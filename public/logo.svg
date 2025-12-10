@@ -1,0 +1,95 @@
+<svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient pentru auriu -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4D03F;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Pattern pentru textura brush stroke -->
+    <pattern id="brushTexture" patternUnits="userSpaceOnUse" width="4" height="4">
+      <rect width="4" height="4" fill="#4A5568"/>
+      <rect x="0" y="0" width="2" height="2" fill="#2D3748" opacity="0.7"/>
+      <rect x="2" y="2" width="2" height="2" fill="#2D3748" opacity="0.7"/>
+    </pattern>
+  </defs>
+  
+  <!-- Brush stroke principal -->
+  <g transform="translate(50, 150)">
+    <!-- Stratul de bază al brush stroke-ului -->
+    <path d="M20 80 Q100 40 200 60 Q300 80 400 50 Q500 20 600 40 Q650 50 700 45 L705 85 Q650 90 600 80 Q500 60 400 90 Q300 120 200 100 Q100 80 20 120 Z" 
+          fill="#6B7280" opacity="0.8"/>
+    
+    <!-- Stratul texturat -->
+    <path d="M25 82 Q105 42 205 62 Q305 82 405 52 Q505 22 605 42 Q650 52 695 47 L700 83 Q645 88 595 78 Q495 58 395 88 Q295 118 195 98 Q95 78 25 118 Z" 
+          fill="url(#brushTexture)" opacity="0.9"/>
+    
+    <!-- Detalii de textură -->
+    <path d="M30 75 Q110 35 210 55 Q310 75 410 45 Q510 15 610 35 Q640 40 680 38" 
+          stroke="#374151" strokeWidth="2" fill="none" opacity="0.6"/>
+    <path d="M35 90 Q115 50 215 70 Q315 90 415 60 Q515 30 615 50 Q645 55 685 53" 
+          stroke="#374151" strokeWidth="1.5" fill="none" opacity="0.4"/>
+    
+    <!-- Efecte de splatter -->
+    <circle cx="40" cy="65" r="2" fill="#4A5568" opacity="0.6"/>
+    <circle cx="680" cy="70" r="1.5" fill="#4A5568" opacity="0.5"/>
+    <circle cx="350" cy="45" r="1" fill="#4A5568" opacity="0.7"/>
+    <circle cx="550" cy="85" r="1.2" fill="#4A5568" opacity="0.6"/>
+  </g>
+  
+  <!-- Paleta de pictură -->
+  <g transform="translate(380, 120)">
+    <!-- Umbra paletei -->
+    <ellipse cx="2" cy="2" rx="45" ry="32" fill="#000000" opacity="0.2"/>
+    
+    <!-- Paleta principală -->
+    <ellipse cx="0" cy="0" rx="45" ry="30" fill="url(#goldGradient)"/>
+    
+    <!-- Highlight pe paletă -->
+    <ellipse cx="-8" cy="-8" rx="35" ry="22" fill="#F7DC6F" opacity="0.6"/>
+    
+    <!-- Găurile pentru vopsele -->
+    <circle cx="-20" cy="-8" r="6" fill="white" opacity="0.9"/>
+    <circle cx="-5" cy="-12" r="5" fill="white" opacity="0.9"/>
+    <circle cx="12" cy="-10" r="4.5" fill="white" opacity="0.9"/>
+    <circle cx="-8" cy="8" r="5.5" fill="white" opacity="0.9"/>
+    
+    <!-- Gaura pentru deget -->
+    <ellipse cx="25" cy="15" rx="12" ry="8" fill="white" opacity="0.9"/>
+    
+    <!-- Contur paletă -->
+    <ellipse cx="0" cy="0" rx="45" ry="30" fill="none" stroke="#B8860B" strokeWidth="1" opacity="0.8"/>
+  </g>
+  
+  <!-- Textul principal: VICTORIA OCARA -->
+  <g transform="translate(150, 240)">
+    <!-- Umbra text -->
+    <text x="2" y="2" fontFamily="serif" fontSize="72" fontWeight="bold" fill="#8B4513" opacity="0.3" letterSpacing="4px">
+      VICTORIA OCARA
+    </text>
+    
+    <!-- Textul principal -->
+    <text x="0" y="0" fontFamily="serif" fontSize="72" fontWeight="bold" fill="url(#goldGradient)" letterSpacing="4px">
+      VICTORIA OCARA
+    </text>
+    
+    <!-- Highlight pe text -->
+    <text x="0" y="0" fontFamily="serif" fontSize="72" fontWeight="bold" fill="#F4D03F" opacity="0.4" letterSpacing="4px">
+      VICTORIA OCARA
+    </text>
+  </g>
+  
+  <!-- Subtitlul: OIL PAINT ARTIST -->
+  <g transform="translate(280, 300)">
+    <!-- Umbra subtitle -->
+    <text x="1" y="1" fontFamily="serif" fontSize="24" fontWeight="normal" fill="#8B4513" opacity="0.3" letterSpacing="8px">
+      OIL PAINT ARTIST
+    </text>
+    
+    <!-- Subtitlul principal -->
+    <text x="0" y="0" fontFamily="serif" fontSize="24" fontWeight="normal" fill="url(#goldGradient)" letterSpacing="8px">
+      OIL PAINT ARTIST
+    </text>
+  </g>
+</svg>
