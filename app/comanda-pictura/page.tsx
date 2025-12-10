@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiUpload, FiImage, FiPalette, FiUser, FiMail, FiPhone, FiCheck } from 'react-icons/fi';
+import { FiUpload, FiImage, FiUser, FiMail, FiPhone, FiCheck } from 'react-icons/fi';
 import { useLanguage } from '@/context/LanguageContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -219,7 +219,7 @@ export default function CustomPaintingPage() {
                   {/* Size Selection */}
                   <div>
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <FiPalette className="text-primary" />
+                      <FiImage className="text-primary" />
                       {t('customPainting.specifications.title')}
                     </h3>
                     
