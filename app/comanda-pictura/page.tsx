@@ -55,7 +55,7 @@ export default function CustomPaintingPage() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await axios.post('/api/upload', formData, {
+      const response = await axios.post('/api/upload-public', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
