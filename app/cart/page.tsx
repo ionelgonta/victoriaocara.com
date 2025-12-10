@@ -1,6 +1,7 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
@@ -8,17 +9,18 @@ import { formatPrice } from '@/lib/utils';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const { t } = useLanguage();
 
   if (cart.length === 0) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h1 className="text-4xl font-serif font-bold mb-4">Coșul Tău</h1>
-        <p className="text-xl text-gray-600 mb-8">Coșul tău este gol</p>
+        <h1 className="text-4xl font-serif font-bold mb-4">{t('cart.title')}</h1>
+        <p className="text-xl text-gray-600 mb-8">{t('cart.empty')}</p>
         <Link
           href="/galerie"
           className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-accent transition-colors"
         >
-          Continuă Cumpărăturile
+          {t('cart.continueShopping')}
         </Link>
       </div>
     );
@@ -26,7 +28,7 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-serif font-bold mb-8">Coșul Tău</h1>
+      <h1 className="text-4xl font-serif font-bold mb-8">{t('cart.title')}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-4">
@@ -84,7 +86,7 @@ export default function CartPage() {
 
         <div className="lg:col-span-1">
           <div className="bg-white p-6 rounded-lg shadow-md sticky top-24">
-            <h2 className="text-2xl font-semibold mb-4">Sumar Comandă</h2>
+            <h2 className="text-2xl font-semibold mb-4">{t('checkout.orderSummary')}</h2>
             
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
@@ -92,14 +94,14 @@ export default function CartPage() {
                 <span>{formatPrice(cartTotal)}</span>
               </div>
               <div className="flex justify-between text-sm text-gray-600">
-                <span>Livrare:</span>
-                <span>Calculată la checkout</span>
+                <span>Shipping:</span>
+                <span>Calculated at checkout</span>
               </div>
             </div>
 
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between text-xl font-bold">
-                <span>Total:</span>
+                <span>{t('cart.total')}:</span>
                 <span>{formatPrice(cartTotal)}</span>
               </div>
             </div>
@@ -108,14 +110,14 @@ export default function CartPage() {
               href="/checkout"
               className="block w-full bg-primary text-white text-center py-3 rounded-lg hover:bg-accent transition-colors font-semibold"
             >
-              Finalizează Comanda
+              {t('cart.checkout')}
             </Link>
 
             <Link
               href="/galerie"
               className="block w-full text-center mt-4 text-gray-600 hover:text-primary"
             >
-              Continuă Cumpărăturile
+              {t('cart.continueShopping')}
             </Link>
           </div>
         </div>

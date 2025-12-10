@@ -102,13 +102,18 @@ const translations = {
     
     // Contact Page
     'contact.title': 'Contact',
-    'contact.subtitle': 'Get in touch for commissions or inquiries',
+    'contact.subtitle': 'Have questions? We would love to hear from you!',
     'contact.name': 'Name',
     'contact.email': 'Email',
+    'contact.phone': 'Phone',
     'contact.message': 'Message',
     'contact.send': 'Send Message',
+    'contact.sendForm': 'Send us a Message',
     'contact.info.title': 'Contact Information',
     'contact.info.email': 'Email',
+    'contact.info.phone': 'Phone',
+    'contact.info.address': 'Address',
+    'contact.info.hours': 'Working Hours',
     'contact.info.social': 'Follow me on social media',
     
     // Cart
@@ -144,7 +149,9 @@ const translations = {
     // Footer
     'footer.followUs': 'Follow Us',
     'footer.rights': 'All rights reserved.',
-    'footer.artist': 'Victoria Ocara - Original Art',
+    'footer.artist': 'Victoria Ocara',
+    'footer.description': 'Original paintings created with passion and dedication.',
+    'footer.links': 'Useful Links',
     
     // Features Section
     'features.original.title': 'Original Art',
@@ -256,13 +263,18 @@ const translations = {
     
     // Contact Page
     'contact.title': 'Contact',
-    'contact.subtitle': 'Contactează-mă pentru comisii sau întrebări',
+    'contact.subtitle': 'Ai întrebări? Ne-ar plăcea să auzim de la tine!',
     'contact.name': 'Nume',
     'contact.email': 'Email',
+    'contact.phone': 'Telefon',
     'contact.message': 'Mesaj',
-    'contact.send': 'Trimite Mesaj',
+    'contact.send': 'Trimite Mesajul',
+    'contact.sendForm': 'Trimite-ne un Mesaj',
     'contact.info.title': 'Informații de Contact',
     'contact.info.email': 'Email',
+    'contact.info.phone': 'Telefon',
+    'contact.info.address': 'Adresă',
+    'contact.info.hours': 'Program de Lucru',
     'contact.info.social': 'Urmărește-mă pe rețelele sociale',
     
     // Cart
@@ -298,7 +310,9 @@ const translations = {
     // Footer
     'footer.followUs': 'Urmărește-ne',
     'footer.rights': 'Toate drepturile rezervate.',
-    'footer.artist': 'Victoria Ocara - Artă Originală',
+    'footer.artist': 'Victoria Ocara',
+    'footer.description': 'Tablouri originale create cu pasiune și dedicare.',
+    'footer.links': 'Linkuri Utile',
     
     // Features Section
     'features.original.title': 'Artă Originală',
