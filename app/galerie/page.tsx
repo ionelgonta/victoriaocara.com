@@ -54,21 +54,7 @@ export default function GaleriePage() {
         </div>
       </div>
 
-      {/* Debug Info */}
-      <div className="mb-8 p-4 bg-gray-100 rounded-lg text-sm">
-        <p><strong>Status:</strong> {loading ? 'Se încarcă...' : 'Încărcat'}</p>
-        <p><strong>Tablouri găsite:</strong> {paintings.length}</p>
-        <p><strong>Disponibile:</strong> {paintings.filter((p: any) => !p.sold).length}</p>
-        <p><strong>Vândute:</strong> {paintings.filter((p: any) => p.sold).length}</p>
-        <p><strong>Afișate:</strong> {paintings.filter((p: any) => showSold || !p.sold).length}</p>
-        {error && <p className="text-red-600"><strong>Eroare:</strong> {error}</p>}
-        <button 
-          onClick={loadPaintings}
-          className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Reîncarcă Tablourile
-        </button>
-      </div>
+
 
       {loading ? (
         <div className="text-center py-20">
