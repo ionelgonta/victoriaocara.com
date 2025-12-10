@@ -110,32 +110,35 @@ const testimonials: Testimonial[] = [
 
 export default function Testimonials() {
   const { t, language } = useLanguage();
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  
+  const testimonialsPerPage = 3;
+  const totalPages = Math.ceil(testimonials.length / testimonialsPerPage);
 
   // Auto-play testimonials
   useEffect(() => {
     if (!isAutoPlaying) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+      setCurrentPage((prev) => (prev + 1) % totalPages);
+    }, 6000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, totalPages]);
 
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  const nextPage = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
     setIsAutoPlaying(false);
   };
 
-  const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const prevPage = () => {
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
     setIsAutoPlaying(false);
   };
 
-  const goToTestimonial = (index: number) => {
-    setCurrentIndex(index);
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
     setIsAutoPlaying(false);
   };
 
@@ -149,99 +152,115 @@ export default function Testimonials() {
     return flags[countryCode] || '🌍';
   };
 
-  const currentTestimonial = testimonials[currentIndex];
+  const getCurrentTestimonials = () => {
+    const startIndex = currentPage * testimonialsPerPage;
+    return testimonials.slice(startIndex, startIndex + testimonialsPerPage);
+  };
 
   return (
-    <section className="bg-gradient-to-r from-blue-50 to-indigo-100 py-16">
+    <section className="bg-gradient-to-r from-blue-50 to-indigo-100 py-12">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-serif font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-3">
             {t('testimonials.title')}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
             {t('testimonials.subtitle')}
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="relative">
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white rounded-2xl shadow-xl p-8 md:p-12"
+                key={currentPage}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.4 }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-6"
               >
-                {/* Stars */}
-                <div className="flex justify-center mb-6">
-                  {[...Array(currentTestimonial.rating)].map((_, i) => (
-                    <FiStar key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                  ))}
-                </div>
+                {getCurrentTestimonials().map((testimonial, index) => (
+                  <div
+                    key={testimonial.id}
+                    className="bg-white rounded-xl shadow-lg p-6 h-full flex flex-col"
+                  >
+                    {/* Stars */}
+                    <div className="flex justify-center mb-4">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <FiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
 
-                {/* Testimonial Text */}
-                <blockquote className="text-xl md:text-2xl text-gray-700 text-center mb-8 leading-relaxed italic">
-                  "{currentTestimonial.text[language]}"
-                </blockquote>
+                    {/* Testimonial Text */}
+                    <blockquote className="text-sm md:text-base text-gray-700 text-center mb-4 leading-relaxed italic flex-grow">
+                      "{testimonial.text[language]}"
+                    </blockquote>
 
-                {/* Author */}
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-3 mb-2">
-                    <span className="text-2xl">{getFlagEmoji(currentTestimonial.countryCode)}</span>
-                    <div>
-                      <p className="font-semibold text-lg text-gray-900">
-                        {currentTestimonial.name}
-                      </p>
-                      <p className="text-gray-600">
-                        {currentTestimonial.country}
-                      </p>
+                    {/* Author */}
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-1">
+                        <span className="text-lg">{getFlagEmoji(testimonial.countryCode)}</span>
+                        <div>
+                          <p className="font-semibold text-sm text-gray-900">
+                            {testimonial.name}
+                          </p>
+                          <p className="text-xs text-gray-600">
+                            {testimonial.country}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </motion.div>
             </AnimatePresence>
 
             {/* Navigation Arrows */}
-            <button
-              onClick={prevTestimonial}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow text-gray-600 hover:text-primary"
-              aria-label="Previous testimonial"
-            >
-              <FiChevronLeft className="w-6 h-6" />
-            </button>
+            {totalPages > 1 && (
+              <>
+                <button
+                  onClick={prevPage}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow text-gray-600 hover:text-primary z-10"
+                  aria-label="Previous testimonials"
+                >
+                  <FiChevronLeft className="w-5 h-5" />
+                </button>
 
-            <button
-              onClick={nextTestimonial}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow text-gray-600 hover:text-primary"
-              aria-label="Next testimonial"
-            >
-              <FiChevronRight className="w-6 h-6" />
-            </button>
+                <button
+                  onClick={nextPage}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow text-gray-600 hover:text-primary z-10"
+                  aria-label="Next testimonials"
+                >
+                  <FiChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex justify-center mt-8 gap-2">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToTestimonial(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentIndex
-                    ? 'bg-primary'
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-6 gap-2">
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToPage(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === currentPage
+                      ? 'bg-primary'
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to page ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
 
           {/* Auto-play indicator */}
-          <div className="text-center mt-4">
+          <div className="text-center mt-3">
             <button
               onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-              className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
             >
               {isAutoPlaying ? t('testimonials.pauseAutoplay') : t('testimonials.resumeAutoplay')}
             </button>
