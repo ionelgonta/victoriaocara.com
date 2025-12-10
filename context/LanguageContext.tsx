@@ -154,6 +154,12 @@ const translations = {
     'customPainting.errors.descriptionOrPhoto': 'Please provide either a description or upload a photo',
     'customPainting.errors.submitFailed': 'Failed to send request. Please try again.',
 
+    // Testimonials
+    'testimonials.title': 'What Our Clients Say',
+    'testimonials.subtitle': 'Discover why art lovers from around the world choose our original paintings',
+    'testimonials.pauseAutoplay': 'Pause auto-play',
+    'testimonials.resumeAutoplay': 'Resume auto-play',
+
     // About Page
     'about.title': 'About Me',
     'about.loading': 'Loading...',
@@ -412,6 +418,12 @@ const translations = {
     'customPainting.errors.uploadFailed': 'Nu s-a putut încărca imaginea',
     'customPainting.errors.descriptionOrPhoto': 'Te rugăm să furnizezi o descriere sau să încarci o fotografie',
     'customPainting.errors.submitFailed': 'Nu s-a putut trimite cererea. Te rugăm să încerci din nou.',
+
+    // Testimonials
+    'testimonials.title': 'Ce Spun Clienții Noștri',
+    'testimonials.subtitle': 'Descoperă de ce iubitorii de artă din întreaga lume aleg picturile noastre originale',
+    'testimonials.pauseAutoplay': 'Oprește redarea automată',
+    'testimonials.resumeAutoplay': 'Reia redarea automată',
 
     // About Page
     'about.title': 'Despre Mine',
