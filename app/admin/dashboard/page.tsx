@@ -83,7 +83,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link
             href="/admin/paintings"
             className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
@@ -100,6 +100,15 @@ export default function AdminDashboard() {
             <FiPackage className="w-16 h-16 mx-auto mb-4 text-accent" />
             <h2 className="text-xl font-semibold mb-2">Comenzi</h2>
             <p className="text-gray-600">Vezi și gestionează comenzile</p>
+          </Link>
+
+          <Link
+            href="/admin/about"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <FiFileText className="w-16 h-16 mx-auto mb-4 text-blue-600" />
+            <h2 className="text-xl font-semibold mb-2">Pagina "Despre"</h2>
+            <p className="text-gray-600">Modifică imaginea și conținutul artistei</p>
           </Link>
 
           <Link

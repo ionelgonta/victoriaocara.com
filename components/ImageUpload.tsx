@@ -7,17 +7,19 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 interface ImageUploadProps {
-  onImageUploaded: (url: string, alt: string) => void;
+  onImageUploaded?: (url: string, alt: string) => void;
+  onImageUpload?: (url: string) => void;
   existingUrl?: string;
   existingAlt?: string;
+  currentImage?: string;
 }
 
-export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt }: ImageUploadProps) {
+export default function ImageUpload({ onImageUploaded, onImageUpload, existingUrl, existingAlt, currentImage }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState(existingUrl || '');
+  const [preview, setPreview] = useState(existingUrl || currentImage || '');
   const [alt, setAlt] = useState(existingAlt || '');
   const [useUrl, setUseUrl] = useState(false);
-  const [urlInput, setUrlInput] = useState(existingUrl || '');
+  const [urlInput, setUrlInput] = useState(existingUrl || currentImage || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +65,12 @@ export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt 
 
       const uploadedUrl = response.data.url;
       setPreview(uploadedUrl);
-      onImageUploaded(uploadedUrl, alt || file.name);
+      if (onImageUploaded) {
+        onImageUploaded(uploadedUrl, alt || file.name);
+      }
+      if (onImageUpload) {
+        onImageUpload(uploadedUrl);
+      }
       toast.success('Imagine încărcată cu succes!');
     } catch (error: any) {
       console.error('Upload error:', error);
@@ -93,7 +100,12 @@ export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt 
     }
     
     setPreview(urlInput);
-    onImageUploaded(urlInput, alt);
+    if (onImageUploaded) {
+      onImageUploaded(urlInput, alt);
+    }
+    if (onImageUpload) {
+      onImageUpload(urlInput);
+    }
     toast.success('Imagine adăugată din URL!');
   };
 
@@ -101,7 +113,12 @@ export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt 
     setPreview('');
     setAlt('');
     setUrlInput('');
-    onImageUploaded('', '');
+    if (onImageUploaded) {
+      onImageUploaded('', '');
+    }
+    if (onImageUpload) {
+      onImageUpload('');
+    }
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -232,7 +249,9 @@ export default function ImageUpload({ onImageUploaded, existingUrl, existingAlt 
               value={alt}
               onChange={(e) => {
                 setAlt(e.target.value);
-                onImageUploaded(preview, e.target.value);
+                if (onImageUploaded) {
+                  onImageUploaded(preview, e.target.value);
+                }
               }}
               placeholder="Descriere pentru accesibilitate"
               className="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-accent focus:border-transparent"
