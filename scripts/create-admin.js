@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const readline = require('readline');
@@ -16,7 +17,15 @@ const UserSchema = new mongoose.Schema({
 
 async function createAdmin() {
   try {
-    const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/art-gallery';
+    const MONGODB_URI = process.env.MONGODB_URI;
+    
+    if (!MONGODB_URI) {
+      console.log('✗ MONGODB_URI nu este setat în .env');
+      console.log('Verifică că fișierul .env există și conține MONGODB_URI');
+      process.exit(1);
+    }
+    
+    console.log('Conectare la:', MONGODB_URI.replace(/\/\/.*@/, '//***:***@'));
     
     await mongoose.connect(MONGODB_URI);
     console.log('✓ Conectat la MongoDB');
