@@ -27,8 +27,15 @@ export default function AdminAboutPage() {
   });
 
   useEffect(() => {
+    // Verifică autentificarea
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      router.push('/admin');
+      return;
+    }
+    
     loadAboutContent();
-  }, []);
+  }, [router]);
 
   const loadAboutContent = async () => {
     try {
@@ -49,11 +56,31 @@ export default function AdminAboutPage() {
   const handleSave = async () => {
     setLoading(true);
     try {
-      await axios.post('/api/about-content', aboutContent);
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        toast.error('Nu ești autentificat ca admin');
+        router.push('/admin');
+        return;
+      }
+
+      await axios.post('/api/about-content', aboutContent, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       toast.success('Conținutul paginii "Despre" a fost actualizat!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving about content:', error);
-      toast.error('Eroare la salvarea conținutului');
+      
+      let errorMessage = 'Eroare la salvarea conținutului';
+      if (error.response?.status === 401) {
+        errorMessage = 'Nu ești autentificat ca admin';
+        router.push('/admin');
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+      
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
