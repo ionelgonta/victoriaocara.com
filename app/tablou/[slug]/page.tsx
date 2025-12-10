@@ -5,12 +5,14 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { formatPrice } from '@/lib/utils';
 import axios from 'axios';
 
 export default function PaintingPage() {
   const params = useParams();
   const { addToCart } = useCart();
+  const { t } = useLanguage();
   const [painting, setPainting] = useState<any>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -34,7 +36,7 @@ export default function PaintingPage() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <p className="text-xl">Se încarcă...</p>
+        <p className="text-xl">{t('painting.loading')}</p>
       </div>
     );
   }
@@ -42,8 +44,8 @@ export default function PaintingPage() {
   if (!painting) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <h1 className="text-3xl font-bold mb-4">Tablou negăsit</h1>
-        <p className="text-gray-600">Ne pare rău, acest tablou nu există.</p>
+        <h1 className="text-3xl font-bold mb-4">{t('painting.notFound.title')}</h1>
+        <p className="text-gray-600">{t('painting.notFound.message')}</p>
       </div>
     );
   }
@@ -99,29 +101,29 @@ export default function PaintingPage() {
 
           <div className="space-y-4 mb-8">
             <div>
-              <span className="font-semibold">Dimensiuni:</span>{' '}
+              <span className="font-semibold">{t('painting.dimensions')}:</span>{' '}
               {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
             </div>
             <div>
-              <span className="font-semibold">Tehnică:</span> {painting.technique}
+              <span className="font-semibold">{t('painting.technique')}:</span> {painting.technique}
             </div>
             {painting.sold ? (
               <div className="text-red-600">
-                <span className="font-semibold">Vândut</span>
+                <span className="font-semibold">{t('painting.sold.status')}</span>
               </div>
             ) : painting.stock > 0 ? (
               <div className="text-green-600">
-                <span className="font-semibold">Disponibil</span>
+                <span className="font-semibold">{t('painting.available.status')}</span>
               </div>
             ) : (
               <div className="text-red-600">
-                <span className="font-semibold">Stoc epuizat</span>
+                <span className="font-semibold">{t('painting.outOfStock')}</span>
               </div>
             )}
           </div>
 
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-2">Descriere</h2>
+            <h2 className="text-xl font-semibold mb-2">{t('painting.description')}</h2>
             <p className="text-gray-700 leading-relaxed">{painting.description}</p>
           </div>
 
@@ -130,7 +132,7 @@ export default function PaintingPage() {
             disabled={painting.stock === 0 || painting.sold}
             className="w-full bg-primary text-white py-4 rounded-lg hover:bg-accent transition-colors duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed text-lg font-semibold"
           >
-            {painting.sold ? 'Vândut' : painting.stock > 0 ? 'Adaugă în Coș' : 'Stoc Epuizat'}
+            {painting.sold ? t('painting.sold.status') : painting.stock > 0 ? t('painting.addToCart') : t('painting.outOfStock')}
           </button>
         </div>
       </div>

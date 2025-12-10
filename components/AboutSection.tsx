@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 import axios from 'axios';
 import { getCachedAboutContent, setCachedAboutContent } from '@/lib/aboutContentCache';
 
@@ -15,6 +16,7 @@ interface AboutContent {
 }
 
 export default function AboutSection() {
+  const { t } = useLanguage();
   const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -90,7 +92,7 @@ export default function AboutSection() {
           {/* Text Content */}
           <div className="order-2 lg:order-1">
             <h2 className="text-4xl font-serif font-bold text-primary mb-6">
-              Despre {aboutContent.title}
+              {t('home.about.title')}
             </h2>
             <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
               <p className="text-xl font-medium text-blue-600">
@@ -125,13 +127,13 @@ export default function AboutSection() {
                 href="/despre"
                 className="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-accent transition-colors font-semibold"
               >
-                Citește Povestea Mea
+                Read My Story
               </Link>
               <Link
                 href="/contact"
                 className="inline-block border-2 border-primary text-primary px-6 py-3 rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold"
               >
-                Comandă o Lucrare
+                Commission a Work
               </Link>
             </div>
           </div>
