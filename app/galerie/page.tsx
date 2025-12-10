@@ -8,12 +8,36 @@ export const metadata: Metadata = {
 
 async function getPaintings() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/paintings`, {
+    // Construiește URL-ul dinamic pentru a funcționa și pe Vercel
+    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    
+    if (!baseUrl) {
+      if (process.env.VERCEL_URL) {
+        baseUrl = `https://${process.env.VERCEL_URL}`;
+      } else {
+        baseUrl = 'http://localhost:3000';
+      }
+    }
+    
+    console.log('Fetching paintings from:', `${baseUrl}/api/paintings`);
+    
+    const res = await fetch(`${baseUrl}/api/paintings`, {
       cache: 'no-store',
     });
-    if (!res.ok) return [];
-    return res.json();
+    
+    console.log('Paintings response status:', res.status);
+    
+    if (!res.ok) {
+      console.log('Paintings fetch failed:', res.statusText);
+      return [];
+    }
+    
+    const data = await res.json();
+    console.log('Paintings count:', data.length);
+    
+    return data;
   } catch (error) {
+    console.error('Error fetching paintings:', error);
     return [];
   }
 }
