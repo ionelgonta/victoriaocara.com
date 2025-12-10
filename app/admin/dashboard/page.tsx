@@ -121,6 +121,17 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <Link
+            href="/admin/translations"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <div className="text-4xl mb-4">🌐</div>
+            <h2 className="text-xl font-semibold mb-2">Traduceri</h2>
+            <p className="text-gray-600">Gestionează traducerile EN/RO</p>
+          </Link>
+        </div>
+
         {/* Debug & Tools Section */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold mb-6">Instrumente de Debug & Testing</h3>
