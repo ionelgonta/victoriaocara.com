@@ -1,24 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import dbConnect from '@/lib/mongodb';
+import mongoose from 'mongoose';
+
+// Schema pentru traduceri
+const translationSchema = new mongoose.Schema({
+  key: { type: String, required: true, unique: true },
+  en: { type: String, required: true },
+  ro: { type: String, required: true },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+const Translation = mongoose.models.Translation || mongoose.model('Translation', translationSchema);
 
 export async function GET() {
   try {
-    // Citește fișierul LanguageContext.tsx pentru a extrage traducerile
-    const contextPath = path.join(process.cwd(), 'context', 'LanguageContext.tsx');
-    const contextContent = fs.readFileSync(contextPath, 'utf8');
+    await dbConnect();
     
-    // Extrage traducerile din fișier (simplificat)
-    const enMatch = contextContent.match(/en:\s*{([^}]+)}/);
-    const roMatch = contextContent.match(/ro:\s*{([^}]+)}/);
+    // Încearcă să citească din baza de date
+    const translations = await Translation.find({});
     
-    return NextResponse.json({
-      success: true,
-      translations: {
-        en: enMatch ? enMatch[1] : '',
-        ro: roMatch ? roMatch[1] : ''
-      }
-    });
+    if (translations.length > 0) {
+      // Returnează traducerile din baza de date
+      const translationsObj = {
+        en: {},
+        ro: {}
+      };
+      
+      translations.forEach(t => {
+        translationsObj.en[t.key] = t.en;
+        translationsObj.ro[t.key] = t.ro;
+      });
+      
+      return NextResponse.json({
+        success: true,
+        translations: translationsObj,
+        source: 'database'
+      });
+    } else {
+      // Fallback la traducerile hardcodate din LanguageContext
+      const { translations: defaultTranslations } = await import('@/context/LanguageContext');
+      
+      return NextResponse.json({
+        success: true,
+        translations: defaultTranslations || {
+          en: "// No translations found",
+          ro: "// Nu s-au găsit traduceri"
+        },
+        source: 'fallback'
+      });
+    }
   } catch (error) {
     console.error('Error reading translations:', error);
     return NextResponse.json(
@@ -30,9 +60,11 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    await dbConnect();
+    
     const { key, translations } = await request.json();
     
-    // Verifică autentificarea admin
+    // Verifică autentificarea admin (simplificată pentru demo)
     const authHeader = request.headers.get('authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json(
@@ -41,9 +73,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Pentru moment, doar returnăm success
-    // În implementarea reală, ar trebui să modifici fișierul LanguageContext.tsx
-    console.log('Saving translation:', { key, translations });
+    // Salvează traducerea în baza de date
+    await Translation.findOneAndUpdate(
+      { key },
+      { 
+        key,
+        en: translations.en,
+        ro: translations.ro,
+        updatedAt: new Date()
+      },
+      { upsert: true, new: true }
+    );
+    
+    console.log('Translation saved to database:', { key, translations });
     
     return NextResponse.json({
       success: true,
