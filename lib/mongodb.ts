@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+// Configurare pentru MongoDB local
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://victoriaocara:ArtGallery2024!@localhost:27017/art-gallery';
 
 if (!MONGODB_URI) {
   throw new Error('Please define MONGODB_URI in .env');
@@ -20,10 +21,18 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      // Configurări pentru MongoDB local
+      authSource: 'art-gallery',
+      retryWrites: true,
+      w: 'majority'
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      console.log('✅ Connected to local MongoDB');
       return mongoose;
+    }).catch((error) => {
+      console.error('❌ MongoDB connection error:', error);
+      throw error;
     });
   }
 
