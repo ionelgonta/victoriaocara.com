@@ -545,13 +545,33 @@ const translations = {
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<'en' | 'ro'>('en'); // Default to English
+  const [dynamicTranslations, setDynamicTranslations] = useState<any>({});
+  const [translationsLoaded, setTranslationsLoaded] = useState(false);
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as 'en' | 'ro';
     if (savedLanguage) {
       setLanguage(savedLanguage);
     }
+    
+    // Încarcă traducerile din API
+    loadTranslations();
   }, []);
+
+  const loadTranslations = async () => {
+    try {
+      const response = await fetch('/api/translations');
+      const result = await response.json();
+      
+      if (result.success && result.translations) {
+        setDynamicTranslations(result.translations);
+      }
+    } catch (error) {
+      console.error('Error loading translations:', error);
+    } finally {
+      setTranslationsLoaded(true);
+    }
+  };
 
   const handleSetLanguage = (lang: 'en' | 'ro') => {
     setLanguage(lang);
@@ -559,6 +579,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const t = (key: string): string => {
+    // Încearcă să citească din traducerile dinamice (baza de date) mai întâi
+    if (dynamicTranslations[language] && dynamicTranslations[language][key]) {
+      return dynamicTranslations[language][key];
+    }
+    
+    // Fallback la traducerile hardcodate
     return translations[language][key as keyof typeof translations['en']] || key;
   };
 
