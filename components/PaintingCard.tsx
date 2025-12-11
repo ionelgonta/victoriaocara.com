@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, safeRender } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
 import { getTechniqueText } from '@/lib/techniques';
 
@@ -77,7 +77,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
             {getTitle()}
           </h3>
           <p className="text-sm text-gray-600 mt-1">
-            {String(painting.dimensions?.width || '')} × {String(painting.dimensions?.height || '')} {String(painting.dimensions?.unit || '')}
+            {safeRender(painting.dimensions?.width)} × {safeRender(painting.dimensions?.height)} {safeRender(painting.dimensions?.unit)}
           </p>
           <p className="text-sm text-gray-500">{getTechnique()}</p>
           

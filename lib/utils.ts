@@ -28,6 +28,32 @@ export const formatDate = (date: Date): string => {
   }).format(new Date(date));
 };
 
+// CRITICAL: Safe render function to prevent React error #31
+export const safeRender = (value: any): string => {
+  // Handle null/undefined
+  if (value === null || value === undefined) {
+    return '';
+  }
+  
+  // Handle primitives
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+  
+  // Handle objects with en/ro properties (multilingual content)
+  if (typeof value === 'object' && value !== null) {
+    if (value.en || value.ro) {
+      return String(value.en || value.ro || '');
+    }
+    
+    // For any other object, return empty string to prevent React error
+    return '';
+  }
+  
+  // Fallback
+  return String(value || '');
+};
+
 // Helper function to safely get text from multilingual objects
 export const getLocalizedText = (
   text: string | { en: string; ro: string } | undefined | null,
