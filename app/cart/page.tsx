@@ -5,7 +5,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiTrash2, FiMinus, FiPlus } from 'react-icons/fi';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getLocalizedText } from '@/lib/utils';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal } = useCart();
@@ -13,10 +13,7 @@ export default function CartPage() {
 
   // Helper function to get title in current language
   const getTitle = (title: string | { en: string; ro: string }) => {
-    if (typeof title === 'object' && title !== null) {
-      return title[language] || title.en || '';
-    }
-    return title || '';
+    return getLocalizedText(title, language, 'Untitled');
   };
 
   if (cart.length === 0) {

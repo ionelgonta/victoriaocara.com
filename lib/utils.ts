@@ -27,3 +27,42 @@ export const formatDate = (date: Date): string => {
     day: 'numeric',
   }).format(new Date(date));
 };
+
+// Helper function to safely get text from multilingual objects
+export const getLocalizedText = (
+  text: string | { en: string; ro: string } | undefined | null,
+  language: 'en' | 'ro' = 'en',
+  fallback: string = ''
+): string => {
+  if (!text) return fallback;
+  
+  if (typeof text === 'string') {
+    return text;
+  }
+  
+  if (typeof text === 'object' && text !== null) {
+    return text[language] || text.en || text.ro || fallback;
+  }
+  
+  return String(text) || fallback;
+};
+
+// Helper to safely render any value as string
+export const safeRender = (value: any): string => {
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return String(value);
+  if (typeof value === 'boolean') return String(value);
+  
+  // If it's an object with en/ro properties
+  if (typeof value === 'object' && (value.en || value.ro)) {
+    return value.en || value.ro || '';
+  }
+  
+  // For any other object, convert to string safely
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+};
