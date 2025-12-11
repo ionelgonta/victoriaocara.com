@@ -585,15 +585,15 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const t = (key: string): string => {
-    // TEMPORAR: Folosește doar traducerile hardcodate pentru debugging
+    // Încearcă să folosești traducerile dinamice din baza de date
+    if (translationsLoaded && dynamicTranslations[language] && dynamicTranslations[language][key]) {
+      const value = dynamicTranslations[language][key];
+      return typeof value === 'string' ? value : String(value);
+    }
+    
+    // Fallback la traducerile hardcodate
     const fallback = translations[language][key as keyof typeof translations['en']] || key;
     return typeof fallback === 'string' ? fallback : String(fallback);
-    
-    // TODO: Reactivează după ce se rezolvă React error #31
-    // if (translationsLoaded && dynamicTranslations[language] && dynamicTranslations[language][key]) {
-    //   const value = dynamicTranslations[language][key];
-    //   return typeof value === 'string' ? value : String(value);
-    // }
   };
 
   return (
