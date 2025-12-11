@@ -68,7 +68,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return [...prev, { 
         ...item, 
         quantity: 1,
-        title: typeof item.title === 'string' ? item.title : (item.title?.en || item.title?.ro || 'Untitled'),
+        // Ensure title is always a string to prevent React error #31
+        title: typeof item.title === 'string' 
+          ? item.title 
+          : (typeof item.title === 'object' && item.title 
+            ? (item.title.en || item.title.ro || 'Untitled')
+            : 'Untitled'),
         price: item.price || 0,
         images: item.images || []
       }];

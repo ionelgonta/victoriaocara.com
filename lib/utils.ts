@@ -72,23 +72,3 @@ export const getLocalizedText = (
   
   return String(text) || fallback;
 };
-
-// Helper to safely render any value as string
-export const safeRender = (value: any): string => {
-  if (value === null || value === undefined) return '';
-  if (typeof value === 'string') return value;
-  if (typeof value === 'number') return String(value);
-  if (typeof value === 'boolean') return String(value);
-  
-  // If it's an object with en/ro properties
-  if (typeof value === 'object' && (value.en || value.ro)) {
-    return value.en || value.ro || '';
-  }
-  
-  // For any other object, convert to string safely
-  try {
-    return JSON.stringify(value);
-  } catch {
-    return String(value);
-  }
-};

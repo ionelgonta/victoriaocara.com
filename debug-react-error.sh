@@ -1,24 +1,28 @@
 #!/bin/bash
 
-# Script pentru debugging React error #31
-echo "🐛 Debugging React error #31..."
+echo "🔍 DEBUGGING REACT ERROR #31..."
 
-# 1. Creează un build de dezvoltare pentru a vedea eroarea completă
-echo "📦 Building development version..."
-cd /opt/victoriaocara
-NODE_ENV=development npm run build
+echo "1. Checking for object rendering in components..."
 
-# 2. Restart cu versiunea de dezvoltare
-echo "🔄 Restarting with development build..."
-pm2 restart victoriaocara
-
-# 3. Verifică logs pentru erori detaliate
-echo "📋 Checking logs..."
-pm2 logs victoriaocara --lines 20
+# Search for potential React error #31 issues
+echo "   Searching for {en:, ro:} objects being rendered directly..."
+grep -r "{\s*en\s*:" app/ components/ --include="*.tsx" --include="*.ts" -n || echo "   No direct object rendering found"
 
 echo ""
-echo "🌐 Acum accesează site-ul și verifică console-ul pentru eroarea completă (nu minificată)"
-echo "   Site: https://victoriaocara.com"
+echo "2. Checking safeRender usage..."
+grep -r "safeRender" app/ components/ lib/ --include="*.tsx" --include="*.ts" -n || echo "   No safeRender usage found"
+
 echo ""
-echo "📝 Căută în console pentru 'React error #31' și vezi detaliile complete"
+echo "3. Checking getLocalizedText usage..."
+grep -r "getLocalizedText" app/ components/ --include="*.tsx" --include="*.ts" -n || echo "   No getLocalizedText usage found"
+
 echo ""
+echo "4. Checking for multilingual object handling..."
+grep -r "language\[" app/ components/ --include="*.tsx" --include="*.ts" -n || echo "   No direct language object access found"
+
+echo ""
+echo "5. Testing build for errors..."
+npm run build 2>&1 | grep -i error || echo "   Build completed without errors"
+
+echo ""
+echo "✅ React error #31 debug complete!"
