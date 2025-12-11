@@ -560,6 +560,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const loadTranslations = async () => {
     try {
+      // Verifică dacă suntem în browser
+      if (typeof window === 'undefined') {
+        setTranslationsLoaded(true);
+        return;
+      }
+      
       const response = await fetch('/api/translations');
       const result = await response.json();
       
@@ -580,7 +586,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const t = (key: string): string => {
     // Încearcă să citească din traducerile dinamice (baza de date) mai întâi
-    if (dynamicTranslations[language] && dynamicTranslations[language][key]) {
+    if (translationsLoaded && dynamicTranslations[language] && dynamicTranslations[language][key]) {
       return dynamicTranslations[language][key];
     }
     
