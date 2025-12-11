@@ -607,7 +607,7 @@ export default function AdminPaintingsPage() {
                 <div className="relative h-48">
                   <Image
                     src={painting.images[0].url}
-                    alt={painting.title?.en || painting.title || 'Untitled'}
+                    alt={typeof painting.title === 'object' ? painting.title?.en : painting.title || 'Untitled'}
                     fill
                     className="object-cover"
                   />
@@ -616,7 +616,7 @@ export default function AdminPaintingsPage() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-lg">
-                    {painting.title?.en || painting.title || 'Untitled'}
+                    {typeof painting.title === 'object' ? painting.title?.en : painting.title || 'Untitled'}
                   </h3>
                   {painting.sold && (
                     <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
@@ -625,7 +625,7 @@ export default function AdminPaintingsPage() {
                   )}
                 </div>
                 <p className="text-gray-600 text-sm mb-2">
-                  {painting.technique?.en || painting.technique || 'No technique'}
+                  {typeof painting.technique === 'object' ? painting.technique?.en : painting.technique || 'No technique'}
                 </p>
                 <p className="font-bold text-primary mb-4">{formatPrice(painting.price)}</p>
                 <div className="flex gap-2">
