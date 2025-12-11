@@ -194,7 +194,7 @@ export default function Testimonials() {
 
                     {/* Testimonial Text */}
                     <blockquote className="text-sm md:text-base text-gray-700 text-center mb-4 leading-relaxed italic flex-grow">
-                      "{testimonial.text[language]}"
+                      "{String(testimonial.text?.[language] || testimonial.text || '')}"
                     </blockquote>
 
                     {/* Author */}

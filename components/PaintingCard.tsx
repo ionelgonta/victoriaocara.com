@@ -77,7 +77,7 @@ export default function PaintingCard({ painting }: PaintingCardProps) {
             {getTitle()}
           </h3>
           <p className="text-sm text-gray-600 mt-1">
-            {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
+            {String(painting.dimensions?.width || '')} × {String(painting.dimensions?.height || '')} {String(painting.dimensions?.unit || '')}
           </p>
           <p className="text-sm text-gray-500">{getTechnique()}</p>
           

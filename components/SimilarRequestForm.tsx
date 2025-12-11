@@ -136,7 +136,7 @@ export default function SimilarRequestForm({ painting, isOpen, onClose }: Simila
                 <div>
                   <h3 className="font-medium">{getTitle()}</h3>
                   <p className="text-sm text-gray-600">
-                    {painting.dimensions.width} × {painting.dimensions.height} {painting.dimensions.unit}
+                    {String(painting.dimensions?.width || '')} × {String(painting.dimensions?.height || '')} {String(painting.dimensions?.unit || '')}
                   </p>
                   <p className="text-sm text-gray-600">
                     {t('similarRequest.originalPrice')}: {formatPrice(painting.price)}
