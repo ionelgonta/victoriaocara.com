@@ -11,6 +11,8 @@ import axios from 'axios';
 export default function Home() {
   const { t } = useLanguage();
   const [adminContent, setAdminContent] = useState<any>(null);
+  
+  // Test auto-pull: 17:45 - modificare pentru testare
 
   useEffect(() => {
     // Încearcă să încarce conținutul din admin

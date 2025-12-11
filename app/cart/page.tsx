@@ -13,10 +13,10 @@ export default function CartPage() {
 
   // Helper function to get title in current language
   const getTitle = (title: string | { en: string; ro: string }) => {
-    if (typeof title === 'object') {
-      return title[language] || title.en;
+    if (typeof title === 'object' && title !== null) {
+      return title[language] || title.en || '';
     }
-    return title;
+    return title || '';
   };
 
   if (cart.length === 0) {
@@ -46,30 +46,35 @@ export default function CartPage() {
               className="flex gap-4 bg-white p-4 rounded-lg shadow-md"
             >
               <div className="relative w-24 h-24 flex-shrink-0">
-                {item.images && item.images[0] && (
+                {item.images && item.images[0] && item.images[0].url ? (
                   <Image
                     src={item.images[0].url}
-                    alt={getTitle(item.title)}
+                    alt={getTitle(item.title) || 'Painting'}
                     fill
                     className="object-cover rounded"
                   />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
+                    <span className="text-gray-400 text-xs">No Image</span>
+                  </div>
                 )}
               </div>
 
               <div className="flex-grow">
-                <h3 className="font-semibold text-lg">{getTitle(item.title)}</h3>
-                <p className="text-gray-600">{formatPrice(item.price)}</p>
+                <h3 className="font-semibold text-lg">{getTitle(item.title) || 'Untitled'}</h3>
+                <p className="text-gray-600">{formatPrice(item.price || 0)}</p>
 
                 <div className="flex items-center gap-2 mt-2">
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                    onClick={() => updateQuantity(item._id, Math.max(1, (item.quantity || 1) - 1))}
                     className="p-1 hover:bg-gray-100 rounded"
+                    disabled={(item.quantity || 1) <= 1}
                   >
                     <FiMinus />
                   </button>
-                  <span className="px-4">{item.quantity}</span>
+                  <span className="px-4">{item.quantity || 1}</span>
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                    onClick={() => updateQuantity(item._id, (item.quantity || 1) + 1)}
                     className="p-1 hover:bg-gray-100 rounded"
                   >
                     <FiPlus />
@@ -85,7 +90,7 @@ export default function CartPage() {
                   <FiTrash2 className="w-5 h-5" />
                 </button>
                 <p className="font-semibold">
-                  {formatPrice(item.price * item.quantity)}
+                  {formatPrice((item.price || 0) * (item.quantity || 1))}
                 </p>
               </div>
             </div>

@@ -38,6 +38,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cart]);
 
   const addToCart = (item: any) => {
+    // Validate item
+    if (!item || !item._id) {
+      toast.error('Invalid item');
+      return;
+    }
+
     // Check if item is sold
     if (item.sold) {
       toast.error('Acest tablou a fost deja vândut');
@@ -55,11 +61,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (existing) {
         toast.success('Cantitate actualizată în coș');
         return prev.map((i) =>
-          i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
+          i._id === item._id ? { ...i, quantity: (i.quantity || 1) + 1 } : i
         );
       }
       toast.success('Tablou adăugat în coș');
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { 
+        ...item, 
+        quantity: 1,
+        title: item.title || 'Untitled',
+        price: item.price || 0,
+        images: item.images || []
+      }];
     });
   };
 
@@ -69,7 +81,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateQuantity = (id: string, quantity: number) => {
-    if (quantity < 1) return;
+    if (quantity < 1) {
+      removeFromCart(id);
+      return;
+    }
     setCart((prev) =>
       prev.map((item) => (item._id === id ? { ...item, quantity } : item))
     );
