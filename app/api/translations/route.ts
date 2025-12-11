@@ -20,15 +20,16 @@ export async function GET() {
     const translations = await Translation.find({});
     
     if (translations.length > 0) {
-      // Returnează traducerile din baza de date
+      // Returnează traducerile din baza de date în format corect
       const translationsObj = {
         en: {},
         ro: {}
       };
       
       translations.forEach(t => {
-        translationsObj.en[t.key] = t.en;
-        translationsObj.ro[t.key] = t.ro;
+        // Asigură-te că valorile sunt string-uri, nu obiecte
+        translationsObj.en[t.key] = typeof t.en === 'string' ? t.en : String(t.en);
+        translationsObj.ro[t.key] = typeof t.ro === 'string' ? t.ro : String(t.ro);
       });
       
       return NextResponse.json({

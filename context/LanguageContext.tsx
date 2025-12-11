@@ -587,11 +587,14 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const t = (key: string): string => {
     // Încearcă să citească din traducerile dinamice (baza de date) mai întâi
     if (translationsLoaded && dynamicTranslations[language] && dynamicTranslations[language][key]) {
-      return dynamicTranslations[language][key];
+      const value = dynamicTranslations[language][key];
+      // Asigură-te că returnezi un string, nu un obiect
+      return typeof value === 'string' ? value : String(value);
     }
     
     // Fallback la traducerile hardcodate
-    return translations[language][key as keyof typeof translations['en']] || key;
+    const fallback = translations[language][key as keyof typeof translations['en']] || key;
+    return typeof fallback === 'string' ? fallback : String(fallback);
   };
 
   return (
