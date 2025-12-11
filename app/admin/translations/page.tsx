@@ -10,6 +10,7 @@ export default function AdminTranslationsPage() {
   const [activeTab, setActiveTab] = useState('navigation');
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editValues, setEditValues] = useState<{en: string, ro: string}>({en: '', ro: ''});
+  const [dbTranslations, setDbTranslations] = useState<any>({});
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -17,7 +18,23 @@ export default function AdminTranslationsPage() {
       router.push('/admin');
       return;
     }
+    
+    // Încarcă traducerile din baza de date
+    loadTranslations();
   }, [router]);
+
+  const loadTranslations = async () => {
+    try {
+      const response = await fetch('/api/translations');
+      const result = await response.json();
+      
+      if (result.success && result.translations) {
+        setDbTranslations(result.translations);
+      }
+    } catch (error) {
+      console.error('Error loading translations:', error);
+    }
+  };
 
   // Obiect cu traducerile hardcodate pentru afișare în admin
   const translations = {
@@ -129,6 +146,11 @@ export default function AdminTranslationsPage() {
 
   // Funcție pentru a obține traducerea pentru o cheie specifică
   const getTranslation = (key: string, lang: 'en' | 'ro') => {
+    // Încearcă să citească din baza de date mai întâi
+    if (dbTranslations[lang] && dbTranslations[lang][key]) {
+      return dbTranslations[lang][key];
+    }
+    // Fallback la traducerile hardcodate
     return translations[lang][key as keyof typeof translations['en']] || `[Missing: ${key}]`;
   };
 
@@ -162,6 +184,8 @@ export default function AdminTranslationsPage() {
       if (result.success) {
         alert(`✅ Traducerea pentru "${editingKey}" a fost salvată cu succes!`);
         setEditingKey(null);
+        // Reîncarcă traducerile din baza de date
+        loadTranslations();
       } else {
         alert(`❌ Eroare la salvare: ${result.error}`);
       }
