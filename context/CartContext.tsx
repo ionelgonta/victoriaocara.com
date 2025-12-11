@@ -68,7 +68,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return [...prev, { 
         ...item, 
         quantity: 1,
-        title: item.title || 'Untitled',
+        title: typeof item.title === 'string' ? item.title : (item.title?.en || item.title?.ro || 'Untitled'),
         price: item.price || 0,
         images: item.images || []
       }];
