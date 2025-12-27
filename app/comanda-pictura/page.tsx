@@ -57,6 +57,9 @@ export default function CustomPaintingPage() {
 
       const response = await axios.post('/api/upload-public', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        maxBodyLength: 10 * 1024 * 1024, // 10MB
+        maxContentLength: 10 * 1024 * 1024, // 10MB
+        timeout: 60000, // 60 seconds
       });
 
       setUploadedImage(response.data.url);
