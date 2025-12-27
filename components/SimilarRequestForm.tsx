@@ -128,7 +128,7 @@ export default function SimilarRequestForm({ painting, isOpen, onClose }: Simila
               <div className="mb-6 p-4 bg-gray-50 rounded-lg flex gap-4">
                 {painting.images && painting.images[0] && (
                   <img
-                    src={painting.images[0].url}
+                    src={painting.images[0]}
                     alt={getTitle()}
                     className="w-20 h-20 object-cover rounded-lg"
                   />

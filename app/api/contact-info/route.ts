@@ -1,29 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdmin } from '@/lib/authHelpers';
-import dbConnect from '@/lib/mongodb';
-import mongoose from 'mongoose';
-
-// Schema pentru informații de contact
-const contactInfoSchema = new mongoose.Schema({
-  email: { type: String, required: true },
-  phone: { type: String, required: true },
-  address: { type: String, required: true },
-  workingHours: { type: String, required: true },
-  socialMedia: {
-    facebook: { type: String, default: '' },
-    instagram: { type: String, default: '' },
-    whatsapp: { type: String, default: '' }
-  },
-  updatedAt: { type: Date, default: Date.now }
-});
-
-const ContactInfo = mongoose.models.ContactInfo || mongoose.model('ContactInfo', contactInfoSchema);
+import { getDatabase } from '@/lib/sqlite';
 
 export async function GET() {
   try {
-    await dbConnect();
+    const db = getDatabase();
     
-    let contactInfo = await ContactInfo.findOne();
+    let contactInfo = await db.getContactInfo();
     
     // Dacă nu există informații, returnează valorile default
     if (!contactInfo) {
@@ -63,7 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await dbConnect();
+    const db = getDatabase();
     
     const data = await request.json();
     const { email, phone, address, workingHours, socialMedia } = data;
@@ -77,18 +60,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Salvează sau actualizează informațiile de contact
-    const contactInfo = await ContactInfo.findOneAndUpdate(
-      {}, // Găsește primul document (ar trebui să fie unul singur)
-      { 
-        email,
-        phone,
-        address,
-        workingHours,
-        socialMedia: socialMedia || { facebook: '', instagram: '', whatsapp: '' },
-        updatedAt: new Date()
-      },
-      { upsert: true, new: true }
-    );
+    const contactInfo = await db.updateContactInfo({
+      email,
+      phone,
+      address,
+      workingHours,
+      socialMedia: socialMedia || { facebook: '', instagram: '', whatsapp: '' }
+    });
     
     console.log('Contact info saved:', contactInfo);
     

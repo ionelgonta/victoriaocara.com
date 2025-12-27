@@ -170,7 +170,16 @@ export default function AdminPaintingsPage() {
       featured: painting.featured,
       sold: painting.sold || false,
       negotiable: painting.negotiable || false,
-      images: painting.images.length > 0 ? painting.images : [{ url: '', alt: '' }],
+      images: painting.images && painting.images.length > 0 ? 
+        painting.images.map(img => {
+          if (typeof img === 'string') {
+            return { url: img, alt: '' };
+          } else if (img && typeof img === 'object' && img.url) {
+            return { url: img.url, alt: img.alt || '' };
+          } else {
+            return { url: '', alt: '' };
+          }
+        }) : [{ url: '', alt: '' }],
     });
     setShowForm(true);
   };
@@ -237,11 +246,46 @@ export default function AdminPaintingsPage() {
   const allTechniques = [...defaultTechniques, ...customTechniques];
 
   const updateImage = (index: number, field: 'url' | 'alt', value: string, altValue?: string) => {
-    const newImages = [...formData.images];
-    newImages[index][field] = value;
-    if (field === 'url' && altValue !== undefined) {
-      newImages[index]['alt'] = altValue;
+    // Create a completely new images array to avoid mutation issues
+    const currentImages = formData.images || [];
+    const newImages = [];
+    
+    // Process each image, ensuring they are all objects
+    for (let i = 0; i < currentImages.length; i++) {
+      if (i === index) {
+        // This is the image we're updating
+        let imageObj;
+        if (typeof currentImages[i] === 'string') {
+          imageObj = { url: currentImages[i], alt: '' };
+        } else if (currentImages[i] && typeof currentImages[i] === 'object') {
+          imageObj = { ...currentImages[i] };
+        } else {
+          imageObj = { url: '', alt: '' };
+        }
+        
+        // Update the specific field
+        if (field === 'url') {
+          imageObj.url = value;
+          if (altValue !== undefined) {
+            imageObj.alt = altValue;
+          }
+        } else if (field === 'alt') {
+          imageObj.alt = value;
+        }
+        
+        newImages.push(imageObj);
+      } else {
+        // Copy other images, converting strings to objects if needed
+        if (typeof currentImages[i] === 'string') {
+          newImages.push({ url: currentImages[i], alt: '' });
+        } else if (currentImages[i] && typeof currentImages[i] === 'object') {
+          newImages.push({ ...currentImages[i] });
+        } else {
+          newImages.push({ url: '', alt: '' });
+        }
+      }
     }
+    
     setFormData({ ...formData, images: newImages });
   };
 
@@ -562,8 +606,8 @@ export default function AdminPaintingsPage() {
                     
                     <ImageUpload
                       onImageUploaded={(url, alt) => updateImage(idx, 'url', url, alt)}
-                      existingUrl={img.url}
-                      existingAlt={img.alt}
+                      existingUrl={typeof img === 'string' ? img : img.url}
+                      existingAlt={typeof img === 'string' ? '' : img.alt}
                     />
                   </div>
                 ))}
@@ -606,7 +650,7 @@ export default function AdminPaintingsPage() {
               {painting.images && painting.images[0] && (
                 <div className="relative h-48">
                   <Image
-                    src={painting.images[0].url}
+                    src={painting.images[0]}
                     alt={typeof painting.title === 'object' ? painting.title?.en : painting.title || 'Untitled'}
                     fill
                     className="object-cover"

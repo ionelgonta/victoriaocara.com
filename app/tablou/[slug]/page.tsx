@@ -89,8 +89,8 @@ export default function PaintingPage() {
           >
             {painting.images && painting.images[selectedImage] && (
               <Image
-                src={painting.images[selectedImage].url}
-                alt={painting.images[selectedImage].alt || getTitle()}
+                src={painting.images[selectedImage]}
+                alt={getTitle()}
                 fill
                 className="object-cover"
                 priority
@@ -109,8 +109,8 @@ export default function PaintingPage() {
                   }`}
                 >
                   <Image
-                    src={img.url}
-                    alt={img.alt || `${getTitle()} ${idx + 1}`}
+                    src={img}
+                    alt={`${getTitle()} ${idx + 1}`}
                     fill
                     className="object-cover"
                   />

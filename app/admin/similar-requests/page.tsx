@@ -152,7 +152,7 @@ export default function AdminSimilarRequestsPage() {
 
                 {request.soldPaintingId?.images?.[0] && (
                   <img
-                    src={request.soldPaintingId.images[0].url}
+                    src={request.soldPaintingId.images[0]}
                     alt={request.soldPaintingId.title?.en || 'Painting'}
                     className="w-full h-32 object-cover rounded-lg mb-4"
                   />

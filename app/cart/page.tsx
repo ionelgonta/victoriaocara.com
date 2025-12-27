@@ -43,9 +43,9 @@ export default function CartPage() {
               className="flex gap-4 bg-white p-4 rounded-lg shadow-md"
             >
               <div className="relative w-24 h-24 flex-shrink-0">
-                {item.images && item.images[0] && item.images[0].url ? (
+                {item.images && item.images[0] ? (
                   <Image
-                    src={item.images[0].url}
+                    src={item.images[0]}
                     alt={getTitle(item.title) || 'Painting'}
                     fill
                     className="object-cover rounded"

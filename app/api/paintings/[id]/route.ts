@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Painting from '@/models/Painting';
+import { getDatabase } from '@/lib/sqlite';
 import { generateSlug } from '@/lib/utils';
 import { isAdmin } from '@/lib/authHelpers';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    await dbConnect();
-    const painting = await Painting.findById(params.id);
+    const db = getDatabase();
+    const painting = await db.getPaintingById(params.id);
     
     if (!painting) {
       return NextResponse.json({ error: 'Painting not found' }, { status: 404 });
@@ -15,6 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     
     return NextResponse.json(painting);
   } catch (error) {
+    console.error('Failed to fetch painting:', error);
     return NextResponse.json({ error: 'Failed to fetch painting' }, { status: 500 });
   }
 }
@@ -25,7 +25,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await dbConnect();
+    const db = getDatabase();
     const data = await req.json();
     
     if (data.title) {
@@ -34,7 +34,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       data.slug = generateSlug(titleForSlug);
     }
     
-    const painting = await Painting.findByIdAndUpdate(params.id, data, { new: true });
+    const painting = await db.updatePainting(params.id, data);
     
     if (!painting) {
       return NextResponse.json({ error: 'Painting not found' }, { status: 404 });
@@ -42,6 +42,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     
     return NextResponse.json(painting);
   } catch (error) {
+    console.error('Failed to update painting:', error);
     return NextResponse.json({ error: 'Failed to update painting' }, { status: 500 });
   }
 }
@@ -52,15 +53,16 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await dbConnect();
-    const painting = await Painting.findByIdAndDelete(params.id);
+    const db = getDatabase();
+    const result = await db.deletePainting(params.id);
     
-    if (!painting) {
+    if (!result.deleted) {
       return NextResponse.json({ error: 'Painting not found' }, { status: 404 });
     }
     
     return NextResponse.json({ message: 'Painting deleted' });
   } catch (error) {
+    console.error('Failed to delete painting:', error);
     return NextResponse.json({ error: 'Failed to delete painting' }, { status: 500 });
   }
 }

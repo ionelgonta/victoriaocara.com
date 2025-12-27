@@ -12,7 +12,7 @@ export const createCheckoutSession = async (items: any[], orderId: string) => {
       currency: 'ron',
       product_data: {
         name: item.title,
-        images: item.images ? [item.images[0]?.url] : [],
+        images: item.images ? [typeof item.images[0] === 'string' ? item.images[0] : item.images[0]?.url] : [],
       },
       unit_amount: Math.round(item.price * 100),
     },
