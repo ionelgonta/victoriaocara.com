@@ -1,0 +1,67 @@
+#!/bin/bash
+
+echo "🚀 DEPLOYING IMAGE FIX TO PRODUCTION SERVER"
+echo "==========================================="
+
+# Această comandă trebuie rulată pe serverul de producție
+# Adaptează pentru metoda ta de deployment (SSH, FTP, etc.)
+
+echo "📋 Files to upload to production server:"
+echo ""
+echo "1. lib/imageStorage.ts"
+echo "2. app/api/upload/route.ts" 
+echo "3. app/api/upload-public/route.ts"
+echo "4. scripts/migrate-images-to-files.js"
+echo "5. quick-migrate-server.js"
+echo ""
+
+echo "🔧 Commands to run ON PRODUCTION SERVER:"
+echo ""
+echo "# 1. Create upload directories"
+echo "mkdir -p public/uploads/paintings"
+echo "mkdir -p public/uploads/general"
+echo "chmod 755 public/uploads -R"
+echo ""
+echo "# 2. Install dependencies (if needed)"
+echo "npm install --save-dev @types/uuid"
+echo ""
+echo "# 3. Run migration"
+echo "node scripts/migrate-images-to-files.js"
+echo "# OR use the quick version:"
+echo "node quick-migrate-server.js"
+echo ""
+echo "# 4. Restart server"
+echo "pm2 restart all"
+echo "# OR"
+echo "sudo systemctl restart your-app-name"
+echo ""
+
+echo "🎯 Expected result after running on server:"
+echo "- Images at https://victoriaocara.com/galerie load instantly"
+echo "- No more preloader"
+echo "- API response size drops from 20MB+ to <100KB"
+
+echo ""
+echo "⚠️  IMPORTANT: These commands must be run on the PRODUCTION SERVER"
+echo "   where the live MongoDB database is located!"
+
+# Exemplu pentru deployment cu SCP (adaptează pentru serverul tău)
+echo ""
+echo "📤 Example deployment commands (adapt for your server):"
+echo ""
+echo "# Upload files via SCP:"
+echo "scp lib/imageStorage.ts user@your-server:/path/to/project/lib/"
+echo "scp app/api/upload/route.ts user@your-server:/path/to/project/app/api/upload/"
+echo "scp app/api/upload-public/route.ts user@your-server:/path/to/project/app/api/upload-public/"
+echo "scp scripts/migrate-images-to-files.js user@your-server:/path/to/project/scripts/"
+echo "scp quick-migrate-server.js user@your-server:/path/to/project/"
+echo ""
+echo "# SSH into server and run:"
+echo "ssh user@your-server"
+echo "cd /path/to/project"
+echo "mkdir -p public/uploads/paintings"
+echo "node scripts/migrate-images-to-files.js"
+echo "pm2 restart all"
+echo ""
+
+echo "🚨 URGENT: Run these commands on production server to fix slow images!"
