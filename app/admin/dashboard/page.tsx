@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
-import { FiPackage, FiImage, FiFileText, FiLogOut, FiDollarSign } from 'react-icons/fi';
+import { FiPackage, FiImage, FiFileText, FiLogOut, FiDollarSign, FiMail } from 'react-icons/fi';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -147,6 +147,15 @@ export default function AdminDashboard() {
             <FiFileText className="w-16 h-16 mx-auto mb-4 text-accent" />
             <h2 className="text-xl font-semibold mb-2">Conținut Site</h2>
             <p className="text-gray-600">Editează conținutul paginii principale</p>
+          </Link>
+
+          <Link
+            href="/admin/contact-info"
+            className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow text-center"
+          >
+            <FiMail className="w-16 h-16 mx-auto mb-4 text-blue-600" />
+            <h2 className="text-xl font-semibold mb-2">Informații Contact</h2>
+            <p className="text-gray-600">Modifică email, telefon, adresă și rețele sociale</p>
           </Link>
         </div>
 

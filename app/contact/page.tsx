@@ -1,11 +1,52 @@
 'use client';
 
-import { Metadata } from 'next';
-import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { FiMail, FiPhone, FiMapPin, FiClock, FiFacebook, FiInstagram, FiMessageCircle } from 'react-icons/fi';
 import { useLanguage } from '@/context/LanguageContext';
+import axios from 'axios';
+
+interface ContactInfo {
+  email: string;
+  phone: string;
+  address: string;
+  workingHours: string;
+  socialMedia: {
+    facebook: string;
+    instagram: string;
+    whatsapp: string;
+  };
+}
 
 export default function ContactPage() {
   const { t } = useLanguage();
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    email: 'contact@victoriaocara.com',
+    phone: '+40 123 456 789',
+    address: 'București, România',
+    workingHours: 'Luni - Vineri: 9:00 - 18:00',
+    socialMedia: {
+      facebook: '',
+      instagram: '',
+      whatsapp: ''
+    }
+  });
+
+  useEffect(() => {
+    loadContactInfo();
+  }, []);
+
+  const loadContactInfo = async () => {
+    try {
+      const response = await axios.get('/api/contact-info');
+      if (response.data.success) {
+        setContactInfo(response.data.contactInfo);
+      }
+    } catch (error) {
+      console.error('Error loading contact info:', error);
+      // Folosește valorile default dacă nu se pot încărca
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-5xl font-serif font-bold text-center mb-4">{t('contact.title')}</h1>
@@ -71,10 +112,10 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold mb-1">{t('contact.info.email')}</h3>
                 <a
-                  href="mailto:contact@artgallery.ro"
+                  href={`mailto:${contactInfo.email}`}
                   className="text-gray-600 hover:text-primary"
                 >
-                  contact@artgallery.ro
+                  {contactInfo.email}
                 </a>
               </div>
             </div>
@@ -84,10 +125,10 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold mb-1">{t('contact.info.phone')}</h3>
                 <a
-                  href="tel:+40123456789"
+                  href={`tel:${contactInfo.phone}`}
                   className="text-gray-600 hover:text-primary"
                 >
-                  +40 123 456 789
+                  {contactInfo.phone}
                 </a>
               </div>
             </div>
@@ -97,21 +138,63 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold mb-1">{t('contact.info.address')}</h3>
                 <p className="text-gray-600">
-                  Strada Artei, Nr. 123<br />
-                  București, România
+                  {contactInfo.address}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <FiClock className="w-6 h-6 text-accent mt-1" />
+              <div>
+                <h3 className="font-semibold mb-1">{t('contact.info.hours')}</h3>
+                <p className="text-gray-600">
+                  {contactInfo.workingHours}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 p-6 bg-secondary rounded-lg">
-            <h3 className="font-semibold mb-2">{t('contact.info.hours')}</h3>
-            <p className="text-gray-600">
-              Luni - Vineri: 10:00 - 18:00<br />
-              Sâmbătă: 10:00 - 14:00<br />
-              Duminică: Închis
-            </p>
-          </div>
+          {/* Rețele sociale */}
+          {(contactInfo.socialMedia.facebook || contactInfo.socialMedia.instagram || contactInfo.socialMedia.whatsapp) && (
+            <div className="mt-8 p-6 bg-secondary rounded-lg">
+              <h3 className="font-semibold mb-4">Urmărește-ne</h3>
+              <div className="flex gap-4">
+                {contactInfo.socialMedia.facebook && (
+                  <a
+                    href={contactInfo.socialMedia.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
+                  >
+                    <FiFacebook className="w-5 h-5" />
+                    Facebook
+                  </a>
+                )}
+                {contactInfo.socialMedia.instagram && (
+                  <a
+                    href={contactInfo.socialMedia.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
+                  >
+                    <FiInstagram className="w-5 h-5" />
+                    Instagram
+                  </a>
+                )}
+                {contactInfo.socialMedia.whatsapp && (
+                  <a
+                    href={`https://wa.me/${contactInfo.socialMedia.whatsapp.replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
+                  >
+                    <FiMessageCircle className="w-5 h-5" />
+                    WhatsApp
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
