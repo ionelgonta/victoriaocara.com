@@ -51,7 +51,7 @@ server {
     client_max_body_size 10M;
 
     # Special handling for upload APIs
-    location ~ ^/api/(upload|upload-public|paintings|custom-painting-request|orders|price-offers|similar-requests) {
+    location ~ ^/api/(upload|upload-public|paintings|custom-painting-request|orders|price-offers|similar-requests)(/.*)? {
         client_max_body_size 10M;
         proxy_request_buffering off;
         proxy_pass http://127.0.0.1:3001;
