@@ -32,9 +32,9 @@ export default function ImageUpload({ onImageUploaded, onImageUpload, existingUr
       return;
     }
 
-    // Verifică mărimea (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('Imaginea trebuie să fie mai mică de 10MB');
+    // Verifică mărimea (max 15MB)
+    if (file.size > 15 * 1024 * 1024) {
+      toast.error('Imaginea trebuie să fie mai mică de 15MB');
       return;
     }
 
@@ -59,8 +59,8 @@ export default function ImageUpload({ onImageUploaded, onImageUpload, existingUr
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
-        maxBodyLength: 10 * 1024 * 1024, // 10MB
-        maxContentLength: 10 * 1024 * 1024, // 10MB
+        maxBodyLength: 15 * 1024 * 1024, // 15MB
+        maxContentLength: 15 * 1024 * 1024, // 15MB
         timeout: 60000, // 60 seconds
       });
       
@@ -188,7 +188,7 @@ export default function ImageUpload({ onImageUploaded, onImageUpload, existingUr
                   Click pentru a selecta o imagine
                 </p>
                 <p className="text-sm text-gray-500">
-                  JPG, PNG, GIF până la 10MB
+                  JPG, PNG, GIF până la 15MB
                 </p>
               </div>
             )}

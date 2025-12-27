@@ -32,10 +32,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File must be an image' }, { status: 400 });
     }
 
-    // Verifică mărimea (max 10MB pentru cereri publice)
+    // Verifică mărimea (max 15MB pentru cereri publice)
     console.log('File size:', file.size);
-    if (file.size > 10 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File size must be less than 10MB' }, { status: 400 });
+    if (file.size > 15 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File size must be less than 15MB' }, { status: 400 });
     }
 
     console.log('Converting file to base64...');

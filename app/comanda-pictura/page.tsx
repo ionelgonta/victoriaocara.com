@@ -46,7 +46,7 @@ export default function CustomPaintingPage() {
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > 15 * 1024 * 1024) {
       toast.error(t('customPainting.errors.fileTooLarge'));
       return;
     }
@@ -57,8 +57,8 @@ export default function CustomPaintingPage() {
 
       const response = await axios.post('/api/upload-public', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        maxBodyLength: 10 * 1024 * 1024, // 10MB
-        maxContentLength: 10 * 1024 * 1024, // 10MB
+        maxBodyLength: 15 * 1024 * 1024, // 15MB
+        maxContentLength: 15 * 1024 * 1024, // 15MB
         timeout: 60000, // 60 seconds
       });
 
